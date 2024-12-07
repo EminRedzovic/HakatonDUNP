@@ -48,6 +48,10 @@ ul li {
   padding: 15px;
   cursor: pointer;
   font-size: 20px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
   border-top: 1px solid rgb(44, 44, 44);
 }
 

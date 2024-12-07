@@ -62,3 +62,14 @@
   margin-top: 10px;
   color: white;
 }
+
+.vin {
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.vin:hover {
+  text-decoration: underline;
+}
