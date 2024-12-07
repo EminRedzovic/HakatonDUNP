@@ -83,6 +83,21 @@ ul li:hover {
   display: none;
 }
 
+.signout-button {
+  background-color: #62b6a9;
+  color: white;
+  border-radius: 2px;
+  border: none;
+  padding: 10px 25px;
+  font-size: 18px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.signout-button:hover {
+  background-color: #78c7c3;
+}
+
 @media screen and (max-width: 900px) {
   .responsive-nav ul li {
     width: 20%;
