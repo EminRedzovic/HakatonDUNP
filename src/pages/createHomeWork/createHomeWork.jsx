@@ -2,21 +2,20 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../../firebase";
+import { db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
-import "./createHomeWork.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { storage } from "../../firebase2";
-import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./createHomeWork.css";
 
 const CreateHomeWork = () => {
   const navigate = useNavigate();
-  const [image, setImage] = useState(null); // For image preview
-  const [imageInput, setImageInput] = useState(null); // For storing image file
-  const [imageUrls, setImageUrls] = useState([]); // For storing uploaded image URLs
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const homeworkCollection = collection(db, "homework");
   const token = localStorage.getItem("token");
-  const [uploading, setUploading] = useState(false);
+
 
   // Handle image file input change
   const handleImageChange = (e) => {
@@ -68,18 +67,39 @@ const CreateHomeWork = () => {
           title: values.title,
           description: values.description,
           dueDate: values.dueDate,
-          image: imageUrls[0] || "", // If image exists, save URL, otherwise empty string
+          file: values.file,
+          image: imageFile ? URL.createObjectURL(imageFile) : null,
         };
 
         await addDoc(homeworkCollection, data); // Add document to Firestore
-
-        alert("Uspesno");
-        navigate("/homework"); // Navigate to the homework page after submission
+        toast.success("Uspesno!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
       } catch (err) {
-        console.log("Error adding homework: ", err);
+        console.log(err);
+        toast.error("Operacija je uspešno završena!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
       }
     },
   });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="create-homework-page1">
@@ -152,11 +172,11 @@ const CreateHomeWork = () => {
                 accept="image/*"
                 onChange={handleImageChange}
               />
-              {image && (
+              {imagePreview && (
                 <img
-                  src={image}
+                  src={imagePreview}
                   alt="Preview"
-                  className="create-homework-image-preview"
+                  style={{ width: "200px", height: "auto" }}
                 />
               )}
             </div>
@@ -173,6 +193,7 @@ const CreateHomeWork = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import TeacherRegister from "./pages/TeacherRegister/TeacherRegister";
 import TeacherLogin from "./pages/TeacherRegister/TeacherLogin";
 import CreateHomeWork from "./pages/createHomeWork/createHomeWork";
 import CreateNewStudent from "./pages/createNewStudent/createNewStudent";
+import Students from "./pages/Students/allStudents";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           path="/teacher/createNewStudent"
           element={<CreateNewStudent />}
         />
+        <Route path="/teacher/students" element={<Students />} />
         <Route path="/register" element={<TeacherRegister />} />
         <Route path="/login" element={<TeacherLogin />} />
       </Routes>
