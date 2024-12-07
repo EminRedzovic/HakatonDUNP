@@ -8,7 +8,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { collection } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
-const TeacherRegister = () => {
+const TeacherLogin = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userCollection = collection(db, "users");
@@ -93,4 +93,4 @@ const TeacherRegister = () => {
   );
 };
 
-export default TeacherRegister;
+export default TeacherLogin;
