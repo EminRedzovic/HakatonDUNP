@@ -16,8 +16,11 @@ function App() {
         <Route path="/" element={<Home />} />
 
         <Route path="/submitedForm" element={<SubmitedForm />} />
-        <Route path="/teacher/createHomeWork" element={<CreateHomeWork/>} />
-        <Route path="/teacher/createNewStudent" element={<CreateNewStudent/>} />
+        <Route path="/teacher/createHomeWork" element={<CreateHomeWork />} />
+        <Route
+          path="/teacher/createNewStudent"
+          element={<CreateNewStudent />}
+        />
         <Route path="/register" element={<TeacherRegister />} />
         <Route path="/login" element={<TeacherLogin />} />
       </Routes>
