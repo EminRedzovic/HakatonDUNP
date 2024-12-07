@@ -19,7 +19,7 @@
   margin: 0px;
   display: flex;
   height: 100vh;
-  background-color:  #F4F6F7;
+  background-color: #f4f6f7;
 }
 
 .sidebar-div {
@@ -30,93 +30,128 @@
   width: 70%;
 }
 
-.home-main .text{
-    font-size: 50px;
-    padding: 10px;
-  }
+.home-main .text {
+  font-size: 50px;
+  padding: 10px;
+}
 
 .home-main .all-homeworks {
-    display: flex;
+  display: flex;
 }
 
 .home-main .completed-work {
-    display: block;
-    overflow-y: scroll;
-    max-height: 500px;
+  display: block;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 550px;
 }
 
-.home-main .completed-work .complete{
-    padding: 20px !important;
-    margin: 10px !important;
-    background-color: gray;
-    text-align: center;
-    background-color: #62B6A9;
-    color: #D8F1EC;
-    border-radius: 20px;
+.home-main .completed-work::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.home-main .completed-work::-webkit-scrollbar-thumb {
+  background-color: #62B6A9; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Makes the scrollbar rounded */
+}
+
+.home-main .completed-work::-webkit-scrollbar-track {
+  background: transparent; /* Background of the scrollbar track */
+  margin-top: 10px;
+}
+
+.home-main .completed-work .complete {
+  padding: 20px !important;
+  margin: 10px !important;
+  background-color: gray;
+  text-align: center;
+  background-color: #62b6a9;
+  color: #d8f1ec;
+  border-radius: 20px;
 }
 
 .home-main .all-homeworks .work {
-    display: flex;
-    flex-direction: column;
-    padding: 15px !important;
-    margin: 10px !important;
-    background-color: #2C3E45;
-    justify-content: space-between;
-    border-radius: 20px;
-    height: 220px;
-    width:  250px;
+  display: flex;
+  flex-direction: column;
+  padding: 15px !important;
+  margin: 10px !important;
+  background-color: #2c3e45;
+  justify-content: space-between;
+  border-radius: 20px;
+  height: 220px;
+  width: 250px;
 }
 
 .home-main .all-homeworks .work h1 {
-    color: white;
-    margin-bottom: 10px;
-    font-size: 25px;
+  color: white;
+  margin-bottom: 10px;
+  font-size: 25px;
 }
 
 .home-main .all-homeworks .work h2 {
-    color: white;
-    font-size: 15px;
+  color: white;
+  font-size: 15px;
 }
 
 .home-main .all-homeworks h1 {
-    font-size: 35px;
+  font-size: 35px;
 }
 
 .home-main .all-homeworks h2 {
-    font-size: 25px;
-    margin-bottom: 10px;
+  font-size: 25px;
+  margin-bottom: 10px;
 }
 
 .home-main .all-homeworks .complete-button {
-    float: right;
-    background-color: #62B6A9;
-    border: 0;
-    align-self: self-end;
-    color: #404C56;
-    border-radius: 20px;
-    padding: 10px;
+  float: right;
+  background-color: #62b6a9;
+  border: 0;
+  align-self: self-end;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .home-main .all-homeworks .incomplete-button {
-    float: right;
-    background-color: red;
-    border: 0;
-    align-self: self-end;
-    color: #404C56;
-    border-radius: 20px;
-    padding: 10px;
+  float: right;
+  background-color: red;
+  border: 0;
+  align-self: self-end;
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
 }
 
 .home-main .all-homeworks .waiting-button {
-    float: right;
-    background-color: #62B6A9;
-    border: 0;
-    align-self: self-end;
-    color: #404C56;
-    border-radius: 20px;
-    padding: 10px;
+  float: right;
+  background-color: #62b6a9;
+  border: 0;
+  align-self: self-end;
+  color: #404c56;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.home-main .all-homeworks .waiting-check {
+  float: right;
+  border: 2px solid #62b6a9;
+  align-self: self-end;
+  color: #2c3e45;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.home-main .all-homeworks .incomplete-check {
+  float: right;
+  border: 2px solid #62b6a9;
+  align-self: self-end;
+  color: #2c3e45;
+  border-radius: 20px;
+  padding: 10px;
+  margin-left: 5px;
 }
 
 .buttons {
-    padding: 10px;
+  padding: 10px;
+  height: 50px;
 }

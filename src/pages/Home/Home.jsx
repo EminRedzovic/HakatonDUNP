@@ -10,7 +10,7 @@ const Home = () => {
       </div>
 
       <div className="home-main">
-        <h1 className="text">Domaci Zadaci</h1>
+        <h1 className="text">Domaci Zadaci: Matematika</h1>
         <div className="all-homeworks">
           <div className="completed-work">
             <div className="complete">
@@ -34,8 +34,8 @@ const Home = () => {
           </div>
           <div className="incomplete-work">
             <div className="buttons">
-              <button className="incomplete-button">Incomplete</button>
-              <button className="waiting-button">Waiting for approval</button>
+              <button className="incomplete-check">Incomplete</button>
+              <button className="waiting-check">Waiting for approval</button>
             </div>
             <div className="work">
               <h1>Work Name</h1>
