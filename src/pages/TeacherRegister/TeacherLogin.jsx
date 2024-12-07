@@ -83,6 +83,10 @@ const TeacherLogin = () => {
           ) : null}
         </div>
 
+        <div className="vin" onClick={() => navigate("/register")}>
+          Nemate nalog?
+        </div>
+
         <div className="register-button-div">
           <button type="submit" className="register-button">
             Prijavi se

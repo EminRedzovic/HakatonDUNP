@@ -1,18 +1,40 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
-import { getMyProfile } from "../../firebase";
 import { useNavigate } from "react-router-dom";
 import logoSidebar from "../../photos/download-removebg-preview.png";
 import { TbVocabulary } from "react-icons/tb";
 import { BiMath } from "react-icons/bi";
 import { FaEarthAmericas } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
+import { collection, getDocs } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import { signOut } from "firebase/auth";
 
 const Sidebar = () => {
   const [myProfile, setMyProfile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+  const userCollection = collection(db, "users");
+
+  const getMyProfile = async () => {
+    const data = await getDocs(userCollection);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    const myProfile = filteredData.filter(
+      (user) => user.email === auth.currentUser.email
+    );
+
+    setMyProfile(myProfile);
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("token");
+    navigate("/register");
+  };
 
   const predmeti = [
     "Srpski Jezik",
@@ -60,13 +82,27 @@ const Sidebar = () => {
             </div>
           )
         ) : null}
+
+        <button onClick={logout}>Izloguj se</button>
       </div>
 
       <div className="middle">
         <ul>
-          {predmeti.map((predmet) => (
-            <li className="object-li-div">{predmet}</li>
-          ))}
+          <li className="object-li-div">
+            Srpski Jezik <TbVocabulary />
+          </li>
+          <li className="object-li-div">
+            Matematika <BiMath />
+          </li>
+          <li className="object-li-div">
+            Geografija <FaEarthAmericas />
+          </li>
+          <li className="object-li-div">
+            Istorija <FaHistory />
+          </li>
+          <li className="object-li-div">
+            Engleski Jezik <TbVocabulary />
+          </li>
         </ul>
       </div>
     </div>

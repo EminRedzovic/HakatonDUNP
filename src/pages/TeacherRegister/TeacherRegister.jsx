@@ -153,6 +153,10 @@ const TeacherRegister = () => {
           ) : null}
         </div>
 
+        <p className="vin" onClick={() => navigate("/login")}>
+          Imate nalog?
+        </p>
+
         <div className="register-button-div">
           <button className="register-button">Registracija</button>
         </div>
