@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 
-const StarRating = ({ totalStars = 5 }) => {
-  const [rating, setRating] = useState(0); // Holds the selected star rating
+const StarRating = ({ initialRating = 0, totalStars = 5, isEditable = true, onRatingChange }) => {
+  const [rating, setRating] = useState(initialRating);
+  const [hover, setHover] = useState(null);
 
-  // Function to update the rating
+  // If the rating is passed as a prop, set it initially
+  useEffect(() => {
+    setRating(initialRating);
+  }, [initialRating]);
+
   const handleClick = (star) => {
-    setRating(star);
+    if (isEditable) {
+      setRating(star); // Update the rating only if it's editable
+      if (onRatingChange) {
+        onRatingChange(star); // Call the onRatingChange function to log or update the parent state
+      }
+    }
   };
 
   return (
@@ -17,9 +27,11 @@ const StarRating = ({ totalStars = 5 }) => {
           <FaStar
             key={index}
             size={24}
-            color={star <= rating ? "#ffc107" : "#e4e5e9"} // Yellow for active stars, gray for inactive
+            color={star <= (hover || rating) ? "#ffc107" : "#e4e5e9"} // Yellow for active stars, gray for inactive
             onClick={() => handleClick(star)}
-            style={{ cursor: "pointer" }}
+            onMouseEnter={() => setHover(star)}
+            onMouseLeave={() => setHover(null)}
+            style={{ cursor: isEditable ? "pointer" : "default" }} // Disable pointer cursor if not editable
           />
         );
       })}
