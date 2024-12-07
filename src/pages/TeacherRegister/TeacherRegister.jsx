@@ -17,7 +17,7 @@ const TeacherRegister = () => {
     "matematika",
     "srpski",
     "geografija",
-    "istoija",
+    "istorija",
     "biologija",
     "hemija",
     "fizika",
@@ -45,7 +45,7 @@ const TeacherRegister = () => {
 
     onSubmit: async (values) => {
       if (!auth.currentUser) {
-        if (predmeti.includes(values.object)) {
+        if (predmeti.includes(values.object.toLowerCase())) {
           try {
             const userCredential = await createUserWithEmailAndPassword(
               auth,

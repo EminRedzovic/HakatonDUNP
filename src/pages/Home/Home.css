@@ -19,6 +19,7 @@
   margin: 0px;
   display: flex;
   height: 100vh;
+  overflow-y: auto;
   background-color: #f4f6f7;
 }
 
@@ -28,6 +29,8 @@
 
 .home-main {
   width: 70%;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .home-main .text {
@@ -51,7 +54,7 @@
 }
 
 .home-main .completed-work::-webkit-scrollbar-thumb {
-  background-color: #62B6A9; /* Color of the scrollbar thumb */
+  background-color: #62b6a9; /* Color of the scrollbar thumb */
   border-radius: 10px; /* Makes the scrollbar rounded */
 }
 
