@@ -124,3 +124,6 @@ label {
 .cancel-button:hover {
   background-color: #d8f1ec;
 }
+.errorModal {
+  color: red;
+}
