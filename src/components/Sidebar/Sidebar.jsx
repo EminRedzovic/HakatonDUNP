@@ -132,7 +132,10 @@ const Sidebar = () => {
               <li className="object-li-div">
                 Engleski Jezik <TbVocabulary />
               </li>
-              <li className="object-li-div last-li">
+              <li
+                className="object-li-div last-li"
+                onClick={() => navigate("/psychologist")}
+              >
                 Obrati se psihologu <RiPsychotherapyFill />
               </li>
             </ul>
