@@ -17,17 +17,3 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 const userCollection = collection(db, "users");
-
-export const getMyProfile = async (token, setMyProfile) => {
-  const data = await getDocs(userCollection);
-  const filteredData = data.docs.map((doc) => ({
-    ...doc.data(),
-    id: doc.id,
-  }));
-
-  const myProfile = filteredData.filter(
-    (user) => user.email === auth.currentUser.email
-  );
-
-  setMyProfile(myProfile);
-};

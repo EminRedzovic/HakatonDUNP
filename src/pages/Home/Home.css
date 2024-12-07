@@ -3,8 +3,13 @@
   src: url(../../fonts/CASCADIACODEPL.TTF);
 }
 
+@font-face {
+  font-family: parkinsans;
+  src: url(../../fonts/Parkinsans-VariableFont_wght.ttf);
+}
+
 * {
-  font-family: cascadia, sans-serif;
+  font-family: parkinsans, sans-serif;
   margin: 0px;
   padding: 0px;
 }
