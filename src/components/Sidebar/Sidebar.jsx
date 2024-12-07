@@ -83,7 +83,9 @@ const Sidebar = () => {
           )
         ) : null}
 
-        <button onClick={logout}>Izloguj se</button>
+        <button onClick={logout} className="signout-button">
+          Izloguj se
+        </button>
       </div>
 
       <div className="middle">
