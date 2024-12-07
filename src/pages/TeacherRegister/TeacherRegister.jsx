@@ -82,7 +82,7 @@ const TeacherRegister = () => {
   }
 
   return (
-    <div className="create-homework-page1">
+    <div className="register-form">
       <div className="sidebar-div">
         {/* You can add your Sidebar component here if needed */}
       </div>
