@@ -1,23 +1,24 @@
-/* TeacherRegister.css */
+/* TeacherLogin.css */
 
 /* General Styles */
-.create-homework-page {
+.login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   width: 100%;
 }
-.logo-register {
+.logo-login {
   height: 190px;
 }
-.create-homework-page1 {
+.login-page-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
-.vin {
+.forgot-password {
   font-size: 15px;
   margin-bottom: 15px;
   cursor: pointer;
@@ -27,10 +28,10 @@
   width: 100%;
 }
 
-.vin:hover {
+.forgot-password:hover {
   text-decoration: underline;
 }
-.create-homework-container {
+.login-container {
   width: 100%;
   max-width: 950px;
   padding: 40px;
@@ -40,7 +41,7 @@
   text-align: center;
 }
 
-.create-homework-container h1 {
+.login-container h1 {
   color: #404c56;
   font-size: 2rem;
   font-weight: 600;
@@ -48,19 +49,19 @@
 }
 
 /* Form Styles */
-.create-homework-form {
+.login-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
 }
 
-.create-homework-input-group {
+.login-input-group {
   margin-bottom: 20px;
   width: 100%;
 }
 
-.create-homework-input-group input {
+.login-input-group input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -71,18 +72,18 @@
   transition: border 0.3s ease;
 }
 
-.create-homework-input-group input:focus {
+.login-input-group input:focus {
   border-color: #62b6a9;
   outline: none;
 }
 
 /* Button Styles */
-.create-homework-button-div {
+.login-button-div {
   width: 100%;
   text-align: center;
 }
 
-.create-homework-button {
+.login-button {
   background-color: #62b6a9;
   color: white;
   padding: 15px 60px;
@@ -93,12 +94,12 @@
   transition: background-color 0.3s ease;
 }
 
-.create-homework-button:hover {
+.login-button:hover {
   background-color: #78c7c3;
 }
 
 /* Error Styles */
-.create-homework-error {
+.login-error {
   font-size: 0.9rem;
   color: red;
   margin-top: 5px;

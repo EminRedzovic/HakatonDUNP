@@ -10,7 +10,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 const CreateNewStudent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const studentCollection = collection(db, "students");
+  const studentCollection = collection(db, "users");
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +31,6 @@ const CreateNewStudent = () => {
     }),
 
     onSubmit: async (values) => {
-      // Loguj vrednosti forme za debagovanje
       console.log("Formular je poslat sa vrednostima:", values);
 
       try {
@@ -43,12 +42,17 @@ const CreateNewStudent = () => {
         );
         console.log("Korisnik je kreiran:", userCredential.user);
 
+        // Odjavi trenutno logovanog korisnika (novog korisnika)
+        await auth.signOut();
+        console.log("Korisnik je automatski odjavljen");
+
         // Pripremi podatke o studentu za unos u Firestore
         const data = {
-          username: values.username,
+          name: values.username,
           email: values.email,
           password: values.password,
           odeljenje: values.odeljenje,
+          isTeacher: false,
         };
 
         // Dodaj studenta u Firestore
@@ -62,11 +66,6 @@ const CreateNewStudent = () => {
       }
     },
   });
-
-  // Ako je korisnik već prijavljen, preusmeri ga na početnu stranicu
-  if (token) {
-    return <Navigate to={"/"} replace={true} />;
-  }
 
   return (
     <div className="cns-page">
@@ -91,7 +90,7 @@ const CreateNewStudent = () => {
             <input
               name="password"
               placeholder="Šifra za učenika"
-              type="text"
+              type="password"
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
