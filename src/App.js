@@ -7,6 +7,7 @@ import SubmitedForm from "./pages/submitForm/submitedForm";
 import TeacherRegister from "./pages/TeacherRegister/TeacherRegister";
 import TeacherLogin from "./pages/TeacherRegister/TeacherLogin";
 import CreateHomeWork from "./pages/createHomeWork/createHomeWork";
+import CreateNewStudent from "./pages/createNewStudent/createNewStudent";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
 
         <Route path="/submitedForm" element={<SubmitedForm />} />
         <Route path="/teacher/createHomeWork" element={<CreateHomeWork/>} />
+        <Route path="/teacher/createNewStudent" element={<CreateNewStudent/>} />
         <Route path="/register" element={<TeacherRegister />} />
         <Route path="/login" element={<TeacherLogin />} />
       </Routes>
