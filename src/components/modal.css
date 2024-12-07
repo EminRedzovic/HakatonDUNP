@@ -1,0 +1,126 @@
+/* form.css */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* Ensures padding and border are included in the element's total width and height */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px; /* Ensures modal doesn't exceed this width */
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+h2.modal-header {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #2c3e45;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  color: #404c56;
+  margin-bottom: 5px;
+}
+
+.input-field,
+.textarea-field,
+.file-input {
+  width: 100%; /* Ensures the input will take full width of the parent div */
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #dfe4ea;
+  background-color: #f4f6f7;
+  color: #404c56;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus,
+.textarea-field:focus,
+.file-input:focus {
+  border-color: #62b6a9;
+  outline: none;
+}
+
+.textarea-field {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.submit-button {
+  background-color: #62b6a9;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #78c7c3;
+}
+
+.cancel-button {
+  background-color: #e3e8ea;
+  color: #404c56;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+  background-color: #d8f1ec;
+}
