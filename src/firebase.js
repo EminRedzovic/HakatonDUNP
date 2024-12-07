@@ -18,7 +18,7 @@ export const auth = getAuth(app);
 
 const userCollection = collection(db, "users");
 
-export const getMyProfile = async (token, setMyProfile) => {
+export const getMyProfile = async (setMyProfile) => {
   const data = await getDocs(userCollection);
   const filteredData = data.docs.map((doc) => ({
     ...doc.data(),
