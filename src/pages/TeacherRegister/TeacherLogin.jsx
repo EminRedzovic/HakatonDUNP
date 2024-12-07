@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./TeacherRegister.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import logoPhoto from "../../photos/download-removebg-preview.png";
 import { db, auth } from "../../firebase";
 import { Navigate, useNavigate } from "react-router-dom";
-import { collection } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 const TeacherLogin = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const userCollection = collection(db, "users");
+  const [allUsers, setAllUsers] = useState(null);
+
+  const getAllUsers = async () => {
+    const data = await getDocs(userCollection);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    setAllUsers(filteredData);
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  console.log(allUsers);
 
   const formik = useFormik({
     initialValues: {

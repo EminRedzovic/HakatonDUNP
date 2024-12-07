@@ -10,6 +10,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { PiExamFill } from "react-icons/pi";
 import { MdNoteAdd } from "react-icons/md";
+import { RiPsychotherapyFill } from "react-icons/ri";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { signOut } from "firebase/auth";
@@ -92,10 +93,6 @@ const Sidebar = () => {
         ) : (
           <h1 style={{ marginTop: "10px" }}>Loading...</h1>
         )}
-
-        <button onClick={logout} className="signout-button">
-          Izloguj se
-        </button>
       </div>
 
       <div className="middle">
@@ -105,13 +102,19 @@ const Sidebar = () => {
               <li className="object-li-div">
                 Domaci zadaci <PiExamFill />
               </li>
-              <li className="object-li-div">
-                Dodaj Dommaci zadatak <MdNoteAdd />
+              <li
+                className="object-li-div"
+                onClick={() => navigate("/teacher/createhomework")}
+              >
+                Dodaj Domaci zadatak <MdNoteAdd />
               </li>
               <li className="object-li-div">
                 Ucenici <FaUserFriends />
               </li>
-              <li className="object-li-div">
+              <li
+                onClick={() => navigate("/teacher/createNewStudent")}
+                className="object-li-div last-li"
+              >
                 Registruj ucenika <IoPersonAddSharp />
               </li>
             </ul>
@@ -132,6 +135,9 @@ const Sidebar = () => {
               <li className="object-li-div">
                 Engleski Jezik <TbVocabulary />
               </li>
+              <li className="object-li-div last-li">
+                Obrati se psihologu <RiPsychotherapyFill />
+              </li>
             </ul>
           )
         ) : (
@@ -141,6 +147,12 @@ const Sidebar = () => {
             Loading...
           </h1>
         )}
+
+        <div className="signout-button-div">
+          <button onClick={logout} className="signout-button">
+            Izloguj se
+          </button>
+        </div>
       </div>
     </div>
   );
