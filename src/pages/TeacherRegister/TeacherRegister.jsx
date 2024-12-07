@@ -59,6 +59,7 @@ const TeacherRegister = () => {
               email: values.email,
               password: values.password,
               object: values.object,
+              isTeacher: true,
             };
 
             await addDoc(userCollection, data);

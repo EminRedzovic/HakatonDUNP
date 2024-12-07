@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
@@ -15,3 +15,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+const userCollection = collection(db, "users");
+
+export const getMyProfile = async (token, setMyProfile) => {
+  const data = await getDocs(userCollection);
+  const filteredData = data.docs.map((doc) => ({
+    ...doc.data(),
+    id: doc.id,
+  }));
+
+  const myProfile = filteredData.filter(
+    (user) => user.email === auth.currentUser.email
+  );
+
+  setMyProfile(myProfile);
+};

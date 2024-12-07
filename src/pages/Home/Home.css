@@ -1,0 +1,25 @@
+@font-face {
+  font-family: cascadia;
+  src: url(../../fonts/CASCADIACODEPL.TTF);
+}
+
+* {
+  font-family: cascadia, sans-serif;
+  margin: 0px;
+  padding: 0px;
+}
+
+.home {
+  padding: 0px;
+  margin: 0px;
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar-div {
+  width: 30%;
+}
+
+.home-main {
+  width: 70%;
+}
