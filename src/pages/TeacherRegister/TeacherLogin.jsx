@@ -13,6 +13,8 @@ const TeacherLogin = () => {
   const token = localStorage.getItem("token");
   const userCollection = collection(db, "users");
   const [allUsers, setAllUsers] = useState(null);
+  const [emails, setEmails] = useState(null);
+  const [passwords, setPasswords] = useState(null);
 
   const getAllUsers = async () => {
     const data = await getDocs(userCollection);
@@ -21,6 +23,11 @@ const TeacherLogin = () => {
       id: doc.id,
     }));
 
+    const emails = filteredData.map((user) => user.email);
+    const passwords = filteredData.map((user) => user.password);
+
+    setEmails(emails);
+    setPasswords(passwords);
     setAllUsers(filteredData);
   };
 
@@ -29,6 +36,8 @@ const TeacherLogin = () => {
   }, []);
 
   console.log(allUsers);
+  console.log(emails);
+  console.log(passwords);
 
   const formik = useFormik({
     initialValues: {
@@ -53,10 +62,18 @@ const TeacherLogin = () => {
             formik.values.email,
             formik.values.password
           );
-          localStorage.setItem("token", userCredential.user.uid);
+          localStorage.setItem("token", values.email);
           navigate("/");
         } catch (err) {
-          alert("Uneti nalog ne postoji");
+          if (
+            emails.includes(values.email) &&
+            passwords.includes(values.password)
+          ) {
+            localStorage.setItem("token", values.email);
+            navigate("/");
+          } else {
+            alert("Unesti nalog ne postoji!");
+          }
         }
       } else {
         alert("Vec ste prijavljeni!");

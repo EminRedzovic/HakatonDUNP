@@ -11,7 +11,6 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 const CreateNewStudent = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const studentCollection = collection(db, "students");
   const userCollection = collection(db, "users");
 
   const formik = useFormik({
@@ -37,6 +36,7 @@ const CreateNewStudent = () => {
         if (auth.currentUser) {
           const data = {
             fullName: values.username,
+            password: values.password,
             email: values.email,
             odeljenje: values.odeljenje,
             razredni: auth.currentUser.email,

@@ -21,33 +21,34 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const userCollection = collection(db, "users");
 
+  // Funkcija za dobijanje profila korisnika
   const getMyProfile = async () => {
-    const data = await getDocs(userCollection);
-    const filteredData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    try {
+      const data = await getDocs(userCollection);
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
 
-    const myProfile = filteredData.filter(
-      (user) => user.email === auth.currentUser.email
-    );
+      const userProfile = filteredData.find((user) => user.email === token);
 
-    setMyProfile(myProfile);
+      if (userProfile) {
+        setMyProfile(userProfile);
+      } else {
+        console.error("Korisnik nije pronađen.");
+        setMyProfile(null); // Osiguranje
+      }
+    } catch (error) {
+      console.error("Greška prilikom učitavanja profila:", error);
+    }
   };
 
+  // Funkcija za odjavljivanje
   const logout = async () => {
     await signOut(auth);
     localStorage.removeItem("token");
     navigate("/register");
   };
-
-  const predmeti = [
-    "Srpski Jezik",
-    "Matematika",
-    "Geografija",
-    "Istorija",
-    "Engleski Jezik",
-  ];
 
   useEffect(() => {
     if (!token) {
@@ -55,7 +56,7 @@ const Sidebar = () => {
     }
     const fetchProfile = async () => {
       try {
-        await getMyProfile(token, setMyProfile);
+        await getMyProfile();
       } catch (err) {
         console.log(err);
       }
@@ -64,8 +65,6 @@ const Sidebar = () => {
     fetchProfile();
   }, [token]);
 
-  console.log(myProfile);
-
   if (!token) {
     return <Navigate to="/register" replace={true} />;
   }
@@ -73,49 +72,47 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="top">
-        <img src={logoSidebar} className="logo-sidebar" alt="" />
+        <img src={logoSidebar} className="logo-sidebar" alt="Logo" />
         {myProfile ? (
-          myProfile[0].isTeacher ? (
+          myProfile.isTeacher ? (
             <div className="top-header-content">
               <p className="profesor-ucenik-sidebar">Profesor</p>
               <p className="ime-prezime-sidebar">
-                {myProfile[0].name} {myProfile[0].lastName}
+                {myProfile.name} {myProfile.lastName}
               </p>
             </div>
           ) : (
             <div className="top-header-content">
-              <p className="profesor-ucenik-sidebar">Ucenik</p>
-              <p className="ime-prezime-sidebar">
-                {myProfile[0].name} {myProfile[0].lastName}
-              </p>
+              <p className="profesor-ucenik-sidebar">Učenik</p>
+              <p className="ime-prezime-sidebar">{myProfile.fullName}</p>
             </div>
           )
         ) : (
-          <h1 style={{ marginTop: "10px" }}>Loading...</h1>
+          <h1 style={{ marginTop: "10px" }}>Učitavanje...</h1>
         )}
       </div>
 
       <div className="middle">
         {myProfile ? (
-          myProfile[0].isTeacher ? (
+          myProfile.isTeacher ? (
             <ul>
               <li className="object-li-div">
-                Domaci zadaci <PiExamFill />
+                Domaći zadaci <PiExamFill />
               </li>
               <li
                 className="object-li-div"
                 onClick={() => navigate("/teacher/createhomework")}
               >
-                Dodaj Domaci zadatak <MdNoteAdd />
+                Dodaj Domaći zadatak <MdNoteAdd />
               </li>
               <li className="object-li-div">
-                Ucenici <FaUserFriends />
+                Učenici <FaUserFriends />
               </li>
               <li
                 onClick={() => navigate("/teacher/createNewStudent")}
                 className="object-li-div last-li"
               >
-                Registruj ucenika <IoPersonAddSharp />
+                Registruj učenika <IoPersonAddSharp />
               </li>
             </ul>
           ) : (
@@ -144,7 +141,7 @@ const Sidebar = () => {
           <h1
             style={{ display: "flex", justifyContent: "center", width: "100%" }}
           >
-            Loading...
+            Učitavanje...
           </h1>
         )}
 
