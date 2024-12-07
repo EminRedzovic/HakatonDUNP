@@ -9,6 +9,7 @@ import TeacherLogin from "./pages/TeacherRegister/TeacherLogin";
 import CreateHomeWork from "./pages/createHomeWork/createHomeWork";
 import CreateNewStudent from "./pages/createNewStudent/createNewStudent";
 import Students from "./pages/Students/allStudents";
+import Psychologist from "./pages/psychologist/psychologist";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         />
         <Route path="/teacher/students" element={<Students />} />
         <Route path="/register" element={<TeacherRegister />} />
+        <Route path="/psychologist" element={<Psychologist />} />
+
         <Route path="/login" element={<TeacherLogin />} />
       </Routes>
     </BrowserRouter>
