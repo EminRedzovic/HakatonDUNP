@@ -66,12 +66,19 @@ const SubmitedForm = () => {
 
             <div className="approval-status">
               <p>
-                <strong>Odobreno:</strong>{" "}
-                {task.approved === "Waiting"
-                  ? "Čeka se odobrenje"
-                  : task.approved
-                  ? "Da"
-                  : "Ne"}
+                {task.approved === "Waiting" ? (
+                  <button
+                    style={{
+                      backgroundColor: "red",
+                    }}
+                  >
+                    Nije odobreno
+                  </button>
+                ) : task.approved ? (
+                  <button>Odobreno</button>
+                ) : (
+                  "Ne"
+                )}
               </p>
             </div>
             <div className="pdf-link">
