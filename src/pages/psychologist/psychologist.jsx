@@ -17,7 +17,12 @@ const Psychologist = () => {
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
   };
-
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
   const handleSendMessage = async () => {
     if (message.trim()) {
       setMessages((prevMessages) => [
@@ -79,6 +84,7 @@ const Psychologist = () => {
               type="text"
               value={message}
               onChange={handleMessageChange}
+              onKeyDown={handleKeyDown}
               placeholder="Unesite poruku..."
             />
             <button onClick={handleSendMessage}>Pošaljite</button>
