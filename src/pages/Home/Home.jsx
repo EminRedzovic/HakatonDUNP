@@ -37,10 +37,32 @@ const Home = () => {
               <button className="incomplete-check">Incomplete</button>
               <button className="waiting-check">Waiting for approval</button>
             </div>
-            <div className="work">
-              <h1>Work Name</h1>
-              <h2>Work description</h2>
-              <button className="incomplete-button">Completed</button>
+            <div className="home-works">
+              <div className="work">
+                <h1>Work Name</h1>
+                <h2>Work description</h2>
+                <button className="incomplete-button">Completed</button>
+              </div>
+              <div className="work">
+                <h1>Work Name</h1>
+                <h2>Work description</h2>
+                <button className="incomplete-button">Completed</button>
+              </div>
+              <div className="work">
+                <h1>Work Name</h1>
+                <h2>Work description</h2>
+                <button className="incomplete-button">Completed</button>
+              </div>
+              <div className="work">
+                <h1>Work Name</h1>
+                <h2>Work description</h2>
+                <button className="incomplete-button">Completed</button>
+              </div>
+              <div className="work">
+                <h1>Work Name</h1>
+                <h2>Work description</h2>
+                <button className="incomplete-button">Completed</button>
+              </div>
             </div>
           </div>
         </div>
