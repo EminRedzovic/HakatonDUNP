@@ -18,8 +18,8 @@ const Home = () => {
             </div>
             <div className="work">
               <h1>Work Name</h1>
-              <h2>Work descriptionasdsadasd</h2>
-              <button>Completed</button>
+              <h2>Work descriptionasdsadasdasdassdasdasasdasdasdasdas</h2>
+              <button className="complete-button">Completed</button>
             </div>
             <div className="work">
               <h1>Work Name</h1>
@@ -33,10 +33,14 @@ const Home = () => {
             </div>
           </div>
           <div className="incomplete-work">
+            <div className="buttons">
+              <button className="incomplete-button">Incomplete</button>
+              <button className="waiting-button">Waiting for approval</button>
+            </div>
             <div className="work">
               <h1>Work Name</h1>
               <h2>Work description</h2>
-              <button>Completed</button>
+              <button className="incomplete-button">Completed</button>
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@
   margin: 0px;
   display: flex;
   height: 100vh;
+  background-color:  #F4F6F7;
 }
 
 .sidebar-div {
@@ -35,6 +36,8 @@
 
 .home-main .completed-work {
     display: block;
+    overflow-y: scroll;
+    max-height: 500px;
 }
 
 .home-main .completed-work .complete{
@@ -48,10 +51,26 @@
 }
 
 .home-main .all-homeworks .work {
-    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    padding: 15px !important;
     margin: 10px !important;
-    background-color: gray;
+    background-color: #2C3E45;
+    justify-content: space-between;
     border-radius: 20px;
+    height: 220px;
+    width:  250px;
+}
+
+.home-main .all-homeworks .work h1 {
+    color: white;
+    margin-bottom: 10px;
+    font-size: 25px;
+}
+
+.home-main .all-homeworks .work h2 {
+    color: white;
+    font-size: 15px;
 }
 
 .home-main .all-homeworks h1 {
@@ -63,7 +82,36 @@
     margin-bottom: 10px;
 }
 
-.home-main .all-homeworks .work button {
+.home-main .all-homeworks .complete-button {
     float: right;
-    color: white;
+    background-color: #62B6A9;
+    border: 0;
+    align-self: self-end;
+    color: #404C56;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.home-main .all-homeworks .incomplete-button {
+    float: right;
+    background-color: red;
+    border: 0;
+    align-self: self-end;
+    color: #404C56;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.home-main .all-homeworks .waiting-button {
+    float: right;
+    background-color: #62B6A9;
+    border: 0;
+    align-self: self-end;
+    color: #404C56;
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.buttons {
+    padding: 10px;
 }
