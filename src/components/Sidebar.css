@@ -1,0 +1,100 @@
+.sidebar {
+  background-color: #333333;
+  width: 250px; /* Set a fixed width */
+  height: 100vh; /* Full height */
+  position: fixed; /* Fix the sidebar to the left side */
+  left: 0; /* Align to the left */
+  top: 0; /* Align to the top */
+  display: flex;
+  flex-direction: column;
+  color: white;
+  padding: 20px; /* Optional: Add some padding */
+}
+
+.sidebar div {
+  height: 33%;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.pfp {
+  width: 150px;
+  height: 150px !important;
+  background-color: white;
+  border-radius: 100%;
+}
+
+.username {
+  margin-top: 10px;
+  font-size: 25px;
+  cursor: pointer;
+  color: white;
+}
+
+.username:hover {
+  text-decoration: underline;
+}
+
+.middle {
+  width: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  padding: 15px;
+  cursor: pointer;
+  font-size: 23px;
+  border-top: 1px solid rgb(44, 44, 44);
+}
+
+ul li:hover {
+  background-color: rgb(85, 85, 85);
+}
+
+.o3 {
+  border-bottom: 1px solid rgb(44, 44, 44);
+}
+
+/* responsive */
+
+.responsive-nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #333333;
+  color: white;
+}
+
+.responsive-nav ul li {
+  width: 25%;
+  display: flex;
+  justify-content: center;
+}
+
+.responsive-nav ul .news-li {
+  display: none;
+}
+
+.main{
+  display: flex;
+}
+
+@media screen and (max-width: 900px) {
+  .responsive-nav ul li {
+    width: 20%;
+  }
+
+  .responsive-nav ul .news-li {
+    display: block;
+    display: flex;
+    justify-content: center;
+  }
+}
