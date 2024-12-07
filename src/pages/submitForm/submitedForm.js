@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import "./submitedForm.css";
 import image from "../../assets/profile.png";
+import SubmitHomeworkModal from "../../components/modal";
 
 const SubmitedForm = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const username = "Marko Marković";
+  const taskTitle = "Matematika - Sabiranje";
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   const [homework, setHomework] = useState([
     {
       submitted: true,
@@ -13,6 +20,7 @@ const SubmitedForm = () => {
       approved: true,
       date: "2024-12-06",
       pdfLink: "path_to_pdf_here",
+      student: "Marko Marković",
     },
     {
       submitted: true,
@@ -23,6 +31,7 @@ const SubmitedForm = () => {
       approved: "Waiting",
       date: "2024-12-06",
       pdfLink: "path_to_pdf_here",
+      student: "Jovana Jovanović",
     },
   ]);
 
@@ -43,10 +52,13 @@ const SubmitedForm = () => {
               <img className="task-image" src={image} alt="Task" />
               <div className="task-details">
                 <p>
-                  <strong>Opis:</strong> {task.description}
+                  <strong>Učenik:</strong> {task.student}
                 </p>
                 <p>
                   <strong>Datum:</strong> {task.date}
+                </p>
+                <p>
+                  <strong>Opis:</strong> {task.description}
                 </p>
               </div>
             </div>
@@ -69,13 +81,13 @@ const SubmitedForm = () => {
                 {task.approved === "Waiting" ? (
                   <button
                     style={{
-                      backgroundColor: "red",
+                      backgroundColor: "#E66562",
                     }}
                   >
                     Nije odobreno
                   </button>
                 ) : task.approved ? (
-                  <button>Odobreno</button>
+                  <button onClick={openModal}>Odobreno</button>
                 ) : (
                   "Ne"
                 )}
@@ -94,6 +106,12 @@ const SubmitedForm = () => {
               )}
             </div>
           </div>
+          <SubmitHomeworkModal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            username={username}
+            taskTitle={taskTitle}
+          />
         </div>
       ))}
     </div>

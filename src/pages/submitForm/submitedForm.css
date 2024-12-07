@@ -20,7 +20,7 @@ body {
 }
 .approval-status button {
   border: none;
-  background-color: rgb(67, 163, 67);
+  background-color: #91b862;
   border-radius: 20px;
   padding: 10px 20px;
   font-size: 20px;
@@ -106,7 +106,7 @@ body {
 }
 
 .status-not-submitted {
-  background-color: #e74c3c;
+  background-color: #f44336;
   letter-spacing: 1px;
 }
 
