@@ -1,55 +1,79 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../firebase";
-import { addDoc, collection } from "firebase/firestore";
+import { db, auth } from "../../firebase";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./createHomeWork.css";
+import { MdMapsHomeWork } from "react-icons/md";
 
 const CreateHomeWork = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [profile, setProfile] = useState({});
+  const [loading, setLoading] = useState(true);
   const homeworkCollection = collection(db, "homework");
+
+  // Funkcija za dobijanje korisničkog profila
+  const fetchProfile = async () => {
+    try {
+      const data = await getDocs(collection(db, "users"));
+      const filteredData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      const userProfile = filteredData.find(
+        (user) => user.email === auth.currentUser.email
+      );
+      setProfile(userProfile || {});
+      setLoading(false);
+    } catch (error) {
+      console.error("Greška prilikom učitavanja profila:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
       dueDate: "",
-      file: null,
+      predmet: "",
       image: null,
+      ocena: null,
     },
-
+    enableReinitialize: true, // Omogućava ažuriranje inicijalnih vrednosti
     validationSchema: Yup.object({
       title: Yup.string().required("Naziv domaćeg zadatka je obavezan"),
       description: Yup.string().required("Opis domaćeg zadatka je obavezan"),
       dueDate: Yup.date().required("Rok je obavezan"),
     }),
-
     onSubmit: async (values) => {
       try {
         const data = {
-          title: values.title,
-          description: values.description,
-          dueDate: values.dueDate,
-          file: values.file,
+          ...values,
           image: imageFile ? URL.createObjectURL(imageFile) : null,
         };
 
         await addDoc(homeworkCollection, data);
 
-        toast.success("Uspesno!", {
+        toast.success("Uspešno ste dodali domaći zadatak!", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
         });
+        navigate("/");
       } catch (err) {
-        console.log(err);
-        toast.error("Operacija je uspešno završena!", {
+        console.error("Greška:", err);
+        toast.error("Dodavanje domaćeg zadatka nije uspelo.", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -57,6 +81,12 @@ const CreateHomeWork = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (profile.object) {
+      formik.setFieldValue("predmet", profile.object);
+    }
+  }, [profile]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -70,6 +100,8 @@ const CreateHomeWork = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  if (loading) return <div>Učitavanje...</div>;
 
   return (
     <div className="create-homework-page1">
@@ -98,7 +130,16 @@ const CreateHomeWork = () => {
                 </div>
               )}
             </div>
-
+            <div className="create-homework-input-group">
+              <label htmlFor="predmet">Predmet</label>
+              <input
+                type="text"
+                id="predmet"
+                name="predmet"
+                value={formik.values.predmet}
+                disabled
+              />
+            </div>
             <div className="create-homework-input-group">
               <label htmlFor="description">Opis Domaćeg Zadatka</label>
               <textarea
@@ -133,23 +174,28 @@ const CreateHomeWork = () => {
               )}
             </div>
 
-            <div className="create-homework-input-group">
-              <label htmlFor="file">Priloži PDF Domaćeg</label>
+            <div className="cns-input-group">
+              <label htmlFor="predmet">Odeljenje ucenika</label>
+
               <input
-                type="file"
-                id="file"
-                name="file"
-                accept="application/pdf"
+                list="department"
+                name="odeljenje"
+                placeholder="Odeljenje učenika"
+                value={formik.values.odeljenje}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
-              {formik.touched.file && formik.errors.file && (
-                <div className="create-homework-error">
-                  {formik.errors.file}
-                </div>
+              <datalist id="department">
+                <option value="III-1" />
+                <option value="IV-1" />
+                <option value="V-1" />
+                <option value="VI-1" />
+                <option value="VII-1" />
+              </datalist>
+              {formik.touched.odeljenje && formik.errors.odeljenje && (
+                <div className="cns-error">{formik.errors.odeljenje}</div>
               )}
             </div>
-
             <div className="create-homework-input-group">
               <label htmlFor="image">Dodaj Sliku</label>
               <input
