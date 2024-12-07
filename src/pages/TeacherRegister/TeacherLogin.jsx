@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import "./TeacherLogin.css"; 
+import "./TeacherLogin.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import logoPhoto from "../../photos/download-removebg-preview.png";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { Navigate, useNavigate } from "react-router-dom";
 import { collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
