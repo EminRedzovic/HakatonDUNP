@@ -16,14 +16,6 @@ const CreateHomeWork = () => {
   const homeworkCollection = collection(db, "homework");
   const token = localStorage.getItem("token");
 
-
-  // Handle image file input change
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]; // Get the file from input
-    setImageInput(file); // Store the file for upload
-    setImage(URL.createObjectURL(file)); // Set preview image
-  };
-
   useEffect(() => {
     const importImg = async () => {
       if (imageInput) {
