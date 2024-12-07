@@ -1,15 +1,43 @@
-import React from "react";
-import "./TeacherLogin.css"; // Importing the specific CSS for login
+import React, { useEffect, useState } from "react";
+import "./TeacherLogin.css"; 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import logoPhoto from "../../photos/download-removebg-preview.png";
 import { auth } from "../../firebase";
 import { Navigate, useNavigate } from "react-router-dom";
+import { collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 const TeacherLogin = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const userCollection = collection(db, "users");
+  const [allUsers, setAllUsers] = useState(null);
+  const [emails, setEmails] = useState(null);
+  const [passwords, setPasswords] = useState(null);
+
+  const getAllUsers = async () => {
+    const data = await getDocs(userCollection);
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    const emails = filteredData.map((user) => user.email);
+    const passwords = filteredData.map((user) => user.password);
+
+    setEmails(emails);
+    setPasswords(passwords);
+    setAllUsers(filteredData);
+  };
+
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+
+  console.log(allUsers);
+  console.log(emails);
+  console.log(passwords);
 
   const formik = useFormik({
     initialValues: {
@@ -33,10 +61,18 @@ const TeacherLogin = () => {
             values.email,
             values.password
           );
-          localStorage.setItem("token", userCredential.user.uid);
-          navigate("/"); // Redirect to home or dashboard after successful login
+          localStorage.setItem("token", values.email);
+          navigate("/");
         } catch (err) {
-          alert("Uneti nalog ne postoji");
+          if (
+            emails.includes(values.email) &&
+            passwords.includes(values.password)
+          ) {
+            localStorage.setItem("token", values.email);
+            navigate("/");
+          } else {
+            alert("Unesti nalog ne postoji!");
+          }
         }
       } else {
         alert("Vec ste prijavljeni!");
