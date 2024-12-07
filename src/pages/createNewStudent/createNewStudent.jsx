@@ -54,7 +54,7 @@ const CreateNewStudent = () => {
   return (
     <div className="cns-page">
       <div className="teacher-register">
-        <h1>Dodaj Domaci Zadatak</h1>
+        <h1>Dodaj Novog Ucenika</h1>
 
         <form onSubmit={formik.handleSubmit} className="register-form">
           <div className="email-div">

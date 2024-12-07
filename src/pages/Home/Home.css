@@ -23,3 +23,49 @@
 .home-main {
   width: 70%;
 }
+
+.home-main .text{
+    font-size: 50px;
+    padding: 10px;
+  }
+
+.home-main .all-homeworks {
+    display: flex;
+}
+
+.home-main .completed-work {
+    display: block;
+}
+
+.home-main .completed-work .complete{
+    padding: 20px !important;
+    margin: 10px !important;
+    background-color: gray;
+    text-align: center;
+    background-color: #62B6A9;
+    color: #D8F1EC;
+    border-radius: 20px;
+}
+
+.home-main .all-homeworks .work {
+    padding: 10px !important;
+    margin: 10px !important;
+    background-color: gray;
+    border-radius: 20px;
+    max-width: 300px;
+}
+
+.home-main .all-homeworks h1 {
+    font-size: 35px;
+}
+
+.home-main .all-homeworks h2 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+
+.home-main .all-homeworks .work button {
+    float: right;
+    color: white;
+    padding: 10px;
+}
