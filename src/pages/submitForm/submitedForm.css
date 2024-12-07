@@ -11,12 +11,15 @@ body {
 }
 .submit-container {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
-  flex-direction: column;
-  margin-top: 30px;
 
+  flex-direction: column;
+  margin-top: 5%;
   width: 100%;
+}
+.sabmit-container {
+  display: flex;
 }
 .approval-status button {
   border: none;

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { db, auth } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import "./createHomeWork.css";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 const CreateHomeWork = () => {
   const navigate = useNavigate();
@@ -50,100 +51,109 @@ const CreateHomeWork = () => {
   };
 
   return (
-    <div className="create-homework-page">
-      <div className="create-homework-container">
-        <h1>Dodaj Domaći Zadatak</h1>
+    <div className="create-homework-page1">
+      <div className="sidebar-div">
+        <Sidebar />
+      </div>
+      <div className="create-homework-page">
+        <div className="create-homework-container">
+          <h1>Dodaj Domaći Zadatak</h1>
 
-        <form onSubmit={formik.handleSubmit} className="create-homework-form">
-          <div className="create-homework-input-group">
-            <label htmlFor="title">Naziv Domaćeg Zadatka</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formik.values.title}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Unesite naziv domaćeg zadatka"
-            />
-            {formik.touched.title && formik.errors.title && (
-              <div className="create-homework-error">{formik.errors.title}</div>
-            )}
-          </div>
-
-          <div className="create-homework-input-group">
-            <label htmlFor="description">Opis Domaćeg Zadatka</label>
-            <textarea
-              id="description"
-              name="description"
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              placeholder="Unesite opis domaćeg zadatka"
-            />
-            {formik.touched.description && formik.errors.description && (
-              <div className="create-homework-error">
-                {formik.errors.description}
-              </div>
-            )}
-          </div>
-
-          <div className="create-homework-input-group">
-            <label htmlFor="dueDate">Rok</label>
-            <input
-              type="date"
-              id="dueDate"
-              name="dueDate"
-              value={formik.values.dueDate}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.dueDate && formik.errors.dueDate && (
-              <div className="create-homework-error">
-                {formik.errors.dueDate}
-              </div>
-            )}
-          </div>
-
-          <div className="create-homework-input-group">
-            <label htmlFor="file">Priloži PDF Domaćeg</label>
-            <input
-              type="file"
-              id="file"
-              name="file"
-              accept="application/pdf"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            {formik.touched.file && formik.errors.file && (
-              <div className="create-homework-error">{formik.errors.file}</div>
-            )}
-          </div>
-
-          <div className="create-homework-input-group">
-            <label htmlFor="image">Dodaj Sliku</label>
-            <input
-              type="file"
-              id="image"
-              name="image"
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-            {image && (
-              <img
-                src={image}
-                alt="Preview"
-                className="create-homework-image-preview"
+          <form onSubmit={formik.handleSubmit} className="create-homework-form">
+            <div className="create-homework-input-group">
+              <label htmlFor="title">Naziv Domaćeg Zadatka</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formik.values.title}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Unesite naziv domaćeg zadatka"
               />
-            )}
-          </div>
+              {formik.touched.title && formik.errors.title && (
+                <div className="create-homework-error">
+                  {formik.errors.title}
+                </div>
+              )}
+            </div>
 
-          <div className="create-homework-button-div">
-            <button type="submit" className="create-homework-button">
-              Submit
-            </button>
-          </div>
-        </form>
+            <div className="create-homework-input-group">
+              <label htmlFor="description">Opis Domaćeg Zadatka</label>
+              <textarea
+                id="description"
+                name="description"
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Unesite opis domaćeg zadatka"
+              />
+              {formik.touched.description && formik.errors.description && (
+                <div className="create-homework-error">
+                  {formik.errors.description}
+                </div>
+              )}
+            </div>
+
+            <div className="create-homework-input-group">
+              <label htmlFor="dueDate">Rok</label>
+              <input
+                type="date"
+                id="dueDate"
+                name="dueDate"
+                value={formik.values.dueDate}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.dueDate && formik.errors.dueDate && (
+                <div className="create-homework-error">
+                  {formik.errors.dueDate}
+                </div>
+              )}
+            </div>
+
+            <div className="create-homework-input-group">
+              <label htmlFor="file">Priloži PDF Domaćeg</label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept="application/pdf"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.file && formik.errors.file && (
+                <div className="create-homework-error">
+                  {formik.errors.file}
+                </div>
+              )}
+            </div>
+
+            <div className="create-homework-input-group">
+              <label htmlFor="image">Dodaj Sliku</label>
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={formik.handleChange}
+              />
+              {image && (
+                <img
+                  src={image}
+                  alt="Preview"
+                  className="create-homework-image-preview"
+                />
+              )}
+            </div>
+
+            <div className="create-homework-button-div">
+              <button type="submit" className="create-homework-button">
+                Submit
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

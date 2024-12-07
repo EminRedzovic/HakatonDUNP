@@ -28,7 +28,7 @@
 }
 
 .home-main {
-  width: 70%;
+  width: 100%;
   height: 100vh;
   overflow-y: auto;
 }
@@ -50,11 +50,10 @@
 }
 
 .home-main .all-homeworks .incomplete-work .home-works {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 500px;
-  }
-
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 500px;
+}
 
 .home-main .completed-work::-webkit-scrollbar {
   width: 4px; /* Width of the scrollbar */
@@ -162,7 +161,7 @@
 }
 
 .buttons {
-    padding: 10px;
+  padding: 10px;
   height: 50px;
   width: 290px;
 }
