@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import logoSidebar from "../../photos/download-removebg-preview.png";
 import { TbVocabulary } from "react-icons/tb";
 import { BiMath } from "react-icons/bi";
 import { FaEarthAmericas } from "react-icons/fa6";
 import { FaHistory } from "react-icons/fa";
+import { FaUserFriends } from "react-icons/fa";
+import { IoPersonAddSharp } from "react-icons/io5";
+import { PiExamFill } from "react-icons/pi";
+import { MdNoteAdd } from "react-icons/md";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "../../firebase";
 import { signOut } from "firebase/auth";
@@ -61,6 +65,10 @@ const Sidebar = () => {
 
   console.log(myProfile);
 
+  if (!token) {
+    return <Navigate to="/register" replace={true} />;
+  }
+
   return (
     <div className="sidebar">
       <div className="top">
@@ -81,7 +89,9 @@ const Sidebar = () => {
               </p>
             </div>
           )
-        ) : null}
+        ) : (
+          <h1 style={{ marginTop: "10px" }}>Loading...</h1>
+        )}
 
         <button onClick={logout} className="signout-button">
           Izloguj se
@@ -89,23 +99,48 @@ const Sidebar = () => {
       </div>
 
       <div className="middle">
-        <ul>
-          <li className="object-li-div">
-            Srpski Jezik <TbVocabulary />
-          </li>
-          <li className="object-li-div">
-            Matematika <BiMath />
-          </li>
-          <li className="object-li-div">
-            Geografija <FaEarthAmericas />
-          </li>
-          <li className="object-li-div">
-            Istorija <FaHistory />
-          </li>
-          <li className="object-li-div">
-            Engleski Jezik <TbVocabulary />
-          </li>
-        </ul>
+        {myProfile ? (
+          myProfile[0].isTeacher ? (
+            <ul>
+              <li className="object-li-div">
+                Domaci zadaci <PiExamFill />
+              </li>
+              <li className="object-li-div">
+                Dodaj Dommaci zadatak <MdNoteAdd />
+              </li>
+              <li className="object-li-div">
+                Ucenici <FaUserFriends />
+              </li>
+              <li className="object-li-div">
+                Registruj ucenika <IoPersonAddSharp />
+              </li>
+            </ul>
+          ) : (
+            <ul>
+              <li className="object-li-div">
+                Srpski Jezik <TbVocabulary />
+              </li>
+              <li className="object-li-div">
+                Matematika <BiMath />
+              </li>
+              <li className="object-li-div">
+                Geografija <FaEarthAmericas />
+              </li>
+              <li className="object-li-div">
+                Istorija <FaHistory />
+              </li>
+              <li className="object-li-div">
+                Engleski Jezik <TbVocabulary />
+              </li>
+            </ul>
+          )
+        ) : (
+          <h1
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
+          >
+            Loading...
+          </h1>
+        )}
       </div>
     </div>
   );
