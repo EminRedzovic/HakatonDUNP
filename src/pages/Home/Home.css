@@ -48,11 +48,10 @@
 }
 
 .home-main .all-homeworks .work {
-    padding: 10px !important;
+    padding: 20px !important;
     margin: 10px !important;
     background-color: gray;
     border-radius: 20px;
-    max-width: 300px;
 }
 
 .home-main .all-homeworks h1 {
@@ -67,5 +66,4 @@
 .home-main .all-homeworks .work button {
     float: right;
     color: white;
-    padding: 10px;
 }
