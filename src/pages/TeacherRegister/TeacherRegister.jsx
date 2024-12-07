@@ -82,85 +82,103 @@ const TeacherRegister = () => {
   }
 
   return (
-    <div className="teacher-register">
-      <img className="logo-register" src={logoPhoto} alt="" />
+    <div className="create-homework-page1">
+      <div className="sidebar-div">
+        {/* You can add your Sidebar component here if needed */}
+      </div>
+      <div className="create-homework-page">
+        <div className="create-homework-container">
+          <img className="logo-register" src={logoPhoto} alt="" />
+          <h1>Registrujte se kao učitelj</h1>
 
-      <form onSubmit={formik.handleSubmit} className="register-form">
-        <div className="name-div">
-          <input
-            name="name"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Ime..."
-          />
-          {formik.errors.name && formik.touched.name ? (
-            <p className="error">{formik.errors.name}</p>
-          ) : null}
+          <form onSubmit={formik.handleSubmit} className="create-homework-form">
+            <div className="create-homework-input-group">
+              <input
+                name="name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Ime..."
+              />
+              {formik.errors.name && formik.touched.name ? (
+                <div className="create-homework-error">
+                  {formik.errors.name}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="create-homework-input-group">
+              <input
+                name="lastName"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Prezime..."
+              />
+              {formik.errors.lastName && formik.touched.lastName ? (
+                <div className="create-homework-error">
+                  {formik.errors.lastName}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="create-homework-input-group">
+              <input
+                name="email"
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Email..."
+              />
+              {formik.errors.email && formik.touched.email ? (
+                <div className="create-homework-error">
+                  {formik.errors.email}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="create-homework-input-group">
+              <input
+                name="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Password..."
+                type="password"
+              />
+              {formik.errors.password && formik.touched.password ? (
+                <div className="create-homework-error">
+                  {formik.errors.password}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="create-homework-input-group">
+              <input
+                name="object"
+                value={formik.values.object}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                placeholder="Predmet..."
+              />
+              {formik.errors.object && formik.touched.object ? (
+                <div className="create-homework-error">
+                  {formik.errors.object}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="create-homework-button-div">
+              <button type="submit" className="create-homework-button">
+                Registracija
+              </button>
+            </div>
+            <p className="vin" onClick={() => navigate("/login")}>
+              Imate nalog?
+            </p>
+          </form>
         </div>
-
-        <div className="lastName-div">
-          <input
-            name="lastName"
-            value={formik.values.lastName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Prezime..."
-          />
-          {formik.errors.lastName && formik.touched.lastName ? (
-            <p className="error">{formik.errors.lastName}</p>
-          ) : null}
-        </div>
-
-        <div className="email-div">
-          <input
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Email..."
-          />
-          {formik.errors.email && formik.touched.email ? (
-            <p className="error">{formik.errors.email}</p>
-          ) : null}
-        </div>
-
-        <div className="password-div">
-          <input
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Password..."
-            type="password"
-          />
-          {formik.errors.password && formik.touched.password ? (
-            <p className="error">{formik.errors.password}</p>
-          ) : null}
-        </div>
-
-        <div className="object-div">
-          <input
-            name="object"
-            value={formik.values.object}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="Predmet..."
-            type="object"
-          />
-          {formik.errors.object && formik.touched.object ? (
-            <p className="error">{formik.errors.object}</p>
-          ) : null}
-        </div>
-
-        <p className="vin" onClick={() => navigate("/login")}>
-          Imate nalog?
-        </p>
-
-        <div className="register-button-div">
-          <button className="register-button">Registracija</button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };

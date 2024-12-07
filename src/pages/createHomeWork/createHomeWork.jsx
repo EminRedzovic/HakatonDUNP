@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../../firebase";
+import { db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
-import "./createHomeWork.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "./createHomeWork.css";
 
 const CreateHomeWork = () => {
   const navigate = useNavigate();
-  const [image, setImage] = useState(null); // For image upload
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const homeworkCollection = collection(db, "homework");
 
   const formik = useFormik({
@@ -34,20 +37,38 @@ const CreateHomeWork = () => {
           description: values.description,
           dueDate: values.dueDate,
           file: values.file,
-          image: values.image,
+          image: imageFile ? URL.createObjectURL(imageFile) : null,
         };
 
         await addDoc(homeworkCollection, data);
 
-        alert("Uspesno");
+        toast.success("Uspesno!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
       } catch (err) {
         console.log(err);
+        toast.error("Operacija je uspešno završena!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+        });
       }
     },
   });
 
   const handleImageChange = (e) => {
-    setImage(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -136,13 +157,13 @@ const CreateHomeWork = () => {
                 id="image"
                 name="image"
                 accept="image/*"
-                onChange={formik.handleChange}
+                onChange={handleImageChange}
               />
-              {image && (
+              {imagePreview && (
                 <img
-                  src={image}
+                  src={imagePreview}
                   alt="Preview"
-                  className="create-homework-image-preview"
+                  style={{ width: "200px", height: "auto" }}
                 />
               )}
             </div>
@@ -155,6 +176,7 @@ const CreateHomeWork = () => {
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
