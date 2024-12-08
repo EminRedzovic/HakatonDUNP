@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StarRating from "../../assets/StarRating";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./allStudents.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -50,6 +50,9 @@ const Students = () => {
     activityDescription: Yup.string()
       .required("Opis aktivnosti je obavezan")
       .min(10, "Opis aktivnosti mora imati najmanje 10 karaktera"),
+    activityTitle: Yup.string()
+      .required("Naziv aktivnosti je obavezan")
+      .min(10, "Naziv aktivnosti mora imati najmanje 10 karaktera"),
     activityImage: Yup.mixed().required("Slika aktivnosti je obavezna"),
   });
 
@@ -57,11 +60,41 @@ const Students = () => {
     initialValues: {
       activityDescription: "",
       activityImage: null,
+      activityTitle: "",
+      studentData: selectedStudent,
     },
     validationSchema,
-    onSubmit: (values) => {
-      console.log("Activity added: ", values);
-      closeModal();
+    onSubmit: async (values) => {
+      if (selectedStudent) {
+        const studentDocRef = doc(db, "users", selectedStudent.id);
+        try {
+          console.log(selectedStudent.id);
+          // Create an object to store the activity data
+          const activityData = {
+            title: values.activityTitle,
+            description: values.activityDescription,
+            image: values.activityImage, // Base64 encoded image
+            studentId: selectedStudent.id,
+            timestamp: new Date().toISOString(),
+          };
+
+          // Add the activity to the student's document
+          await setDoc(
+            studentDocRef,
+            {
+              activities: {
+                [new Date().getTime()]: activityData, // Use timestamp as unique key
+              },
+            },
+            { merge: true } // Merge new activity data with existing document
+          );
+
+          console.log("Activity added to Firebase:", activityData);
+          closeModal();
+        } catch (error) {
+          console.error("Error adding activity to Firebase:", error);
+        }
+      }
     },
   });
 
@@ -84,7 +117,7 @@ const Students = () => {
         <Sidebar />
       </div>
       <div className="students-side">
-        <h1 className="text">Svi ucenici</h1>
+        <h1 className="text">Svi učenici</h1>
         <div className="all-students">
           {students.map((student) => {
             return (
@@ -126,6 +159,18 @@ const Students = () => {
                   id="studentName"
                   value={selectedStudent.fullName}
                   disabled
+                  className="input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="activityTitle">Naziv aktivnosti</label>
+                <input
+                  type="text"
+                  id="activityTitle"
+                  name="activityTitle"
+                  value={formik.values.activityTitle}
+                  onChange={formik.handleChange}
+                  placeholder="Unesite naziv aktivnosti..."
                   className="input-field"
                 />
               </div>
