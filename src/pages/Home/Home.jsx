@@ -110,7 +110,89 @@ const Home = () => {
         {myProfile ? (
           myProfile.isTeacher ? (
             <div>
-              <p>profesor</p>
+              <div className="home-h-div">
+                <h1 className="home-h1">Domaci zadaci</h1>
+                <h2 className="zdz">Zavrseni domaci zadaci</h2>
+              </div>
+
+              <div className="all-homeworks">
+                <div className="nezavrseni-domaci">
+                  {unfinishedHomeworks.length > 0 ? (
+                    unfinishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
+
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}
+                          </p>
+
+                          <div className="homework-home-buttons-div">
+                            <button className="homework-home-button">
+                              Otvori
+                            </button>
+                            <button
+                              className="homework-home-button-resi"
+                              onClick={() => {
+                                openModal(homework.id);
+                                setHomework(homework.title);
+                                setHomeworkData(homework);
+                                getAllHomeWorks(getAllHomeWorks());
+                              }}
+                              // Prosleđujemo ID
+                            >
+                              Resi
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="ndz">Nema domacih zadataka :</p>
+                  )}
+                </div>
+
+                <div className="complited-homeworks">
+                  <div className="finished-homeworks-div">
+                    {finishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
+
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <StarRating
+                            initialRating={homework.ocena}
+                            totalStars={5}
+                            isEditable={false} // Set to true for editable stars
+                          />
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}/{homework.work.status}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <>
@@ -151,6 +233,7 @@ const Home = () => {
                                 openModal(homework.id);
                                 setHomework(homework.title);
                                 setHomeworkData(homework);
+                                getAllHomeWorks(getAllHomeWorks());
                               }}
                               // Prosleđujemo ID
                             >
@@ -188,7 +271,7 @@ const Home = () => {
                             isEditable={false} // Set to true for editable stars
                           />
                           <p className="homework-home-date">
-                            Rok: {homework.dueDate}/Predato
+                            Rok: {homework.dueDate}/{homework.work.status}
                           </p>
                         </div>
                       </div>
