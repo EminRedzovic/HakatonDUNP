@@ -26,10 +26,8 @@ const SubmitHomeworkModal = ({
   homework,
   taskTitle,
   homeworkId,
-  homeworkData,
   getAllHomeWorks,
 }) => {
-  console.log(homeworkData);
   const [myProfile, setMyProfile] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({
