@@ -45,6 +45,7 @@
 
 .all-homeworks {
   display: flex;
+  flex-direction: row;
   margin-top: 10px;
   gap: 20px;
 }
