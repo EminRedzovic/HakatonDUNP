@@ -1,13 +1,7 @@
 import React, { useState } from "react";
-import Groq from "groq-sdk"; // Import GROQ SDK
+import axios from "axios"; // Import axios
 import "./psychologist.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
-
-// Kreirajte instancu GROQ SDK sa vašim API ključem
-const groq = new Groq({
-  apiKey: "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", // Vaš API ključ
-  dangerouslyAllowBrowser: true, // Omogućava korišćenje u pretraživaču (NEPOVOLJNO ZA SIGURNOST)
-});
 
 const Psychologist = () => {
   const [message, setMessage] = useState("");
@@ -17,14 +11,17 @@ const Psychologist = () => {
   const handleMessageChange = (event) => {
     setMessage(event.target.value);
   };
+
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleSendMessage();
     }
   };
+
   const handleSendMessage = async () => {
     if (message.trim()) {
+      // Add user's message to chat
       setMessages((prevMessages) => [
         ...prevMessages,
         { text: message, sender: "user" },
@@ -33,27 +30,37 @@ const Psychologist = () => {
       setLoading(true);
 
       try {
-        const response = await groq.chat.completions.create({
-          messages: [
+        // Prepare the API request options
+        const options = {
+          method: "POST",
+          url: "https://chatgpt-api8.p.rapidapi.com/",
+          headers: {
+            "x-rapidapi-key": "1313d4952emsha9f4593e6ef0a81p1ed8bajsn7b9c1e50264b",
+            "x-rapidapi-host": "chatgpt-api8.p.rapidapi.com",
+            "Content-Type": "application/json",
+          },
+          data: [
             {
-              role: "user",
               content: message,
+              role: "user",
             },
           ],
-          model: "llama3-8b-8192", // Zameni model ako je potrebno
-        });
+        };
 
-        const botMessage =
-          response.choices[0]?.message?.content || "No response";
+        // Send message to the RapidAPI ChatGPT endpoint
+        const response = await axios.request(options);
+
+        // Extract bot response
+        const botMessage = response.data?.text || "No response from the bot.";
         setMessages((prevMessages) => [
           ...prevMessages,
           { text: botMessage, sender: "bot" },
         ]);
       } catch (error) {
-        console.error("Error sending message to GROQ:", error);
+        console.error("Error sending message to RapidAPI:", error);
         setMessages((prevMessages) => [
           ...prevMessages,
-          { text: "Oops! Something went wrong.", sender: "bot" },
+          { text: "Oops! Something went wrong. Please try again later.", sender: "bot" },
         ]);
       } finally {
         setLoading(false);
@@ -77,7 +84,7 @@ const Psychologist = () => {
                 <p>{msg.text}</p>
               </div>
             ))}
-            {loading && <p>GROQ is thinking...</p>}
+            {loading && <p>Thinking...</p>}
           </div>
           <div className="chatbox-input">
             <input
@@ -87,7 +94,9 @@ const Psychologist = () => {
               onKeyDown={handleKeyDown}
               placeholder="Unesite poruku..."
             />
-            <button onClick={handleSendMessage}>Pošaljite</button>
+            <button onClick={handleSendMessage} disabled={loading}>
+              {loading ? "Sending..." : "Pošaljite"}
+            </button>
           </div>
         </div>
       </div>
