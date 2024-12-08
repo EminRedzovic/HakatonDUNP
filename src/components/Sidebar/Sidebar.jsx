@@ -128,7 +128,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/");
-                  window.location.reload();
                 }}
               >
                 Domaci zadaci <PiExamFill />
@@ -137,7 +136,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/homeworks/srpski");
-                  window.location.reload();
                 }}
               >
                 Srpski Jezik <TbVocabulary />
@@ -146,7 +144,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/homeworks/matematika");
-                  window.location.reload();
                 }}
               >
                 Matematika <BiMath />
@@ -155,7 +152,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/homeworks/geografija");
-                  window.location.reload();
                 }}
               >
                 Geografija <FaEarthAmericas />
@@ -164,7 +160,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/homeworks/istorija");
-                  window.location.reload();
                 }}
               >
                 Istorija <FaHistory />
@@ -173,7 +168,6 @@ const Sidebar = () => {
                 className="object-li-div"
                 onClick={() => {
                   navigate("/homeworks/engleski");
-                  window.location.reload();
                 }}
               >
                 Engleski Jezik <TbVocabulary />
@@ -182,7 +176,6 @@ const Sidebar = () => {
                 className="object-li-div last-li"
                 onClick={() => {
                   navigate("/psychologist");
-                  window.location.reload();
                 }}
               >
                 Obrati se psihologu <RiPsychotherapyFill />

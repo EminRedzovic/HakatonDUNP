@@ -1,6 +1,4 @@
-
 import React, { useEffect, useState } from "react";
-
 import "./Home.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { MdMapsHomeWork } from "react-icons/md";
