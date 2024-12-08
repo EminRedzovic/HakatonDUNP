@@ -61,20 +61,25 @@ const Students = () => {
       activityDescription: "",
       activityImage: null,
       activityTitle: "",
-      studentData: selectedStudent,
+      uDescription: "",
+      uImage: null
+      
     },
     validationSchema,
     onSubmit: async (values) => {
       if (selectedStudent) {
-        const studentDocRef = doc(db, "activities", selectedStudent.id);
+        const studentDocRef = doc(db, "activities",selectedStudent.id);
         try {
           console.log(selectedStudent.id);
           // Create an object to store the activity data
           const activityData = {
-            title: values.activityTitle,
-            description: values.activityDescription,
-            image: values.activityImage, // Base64 encoded image
+            aTitle: values.activityTitle,
+            aDescription: values.activityDescription,
+            aImage: values.activityImage, // Base64 encoded image
             email: selectedStudent.email,
+            uDescription: null,
+            uImage: null,
+            status: null,
             timestamp: new Date().toISOString(),
           };
 

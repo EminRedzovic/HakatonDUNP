@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import StarRating from "../../assets/StarRating";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./otherActivities.css";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-import SubmitActivityModal from "../../components/modal";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import "../../components/modal.css";
+
 
 const OtherActivities = () => {
   const [activityData, setActivityData] = useState([]); // Ovo sada sadrži sve aktivnosti
@@ -45,6 +48,48 @@ const OtherActivities = () => {
     }
   }, [token]);
 
+  /* const formik = useFormik({
+    initialValues: {
+      Opis: "",
+      image: null,
+      activityTitle: "",
+      studentData: selectedStudent,
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      if (selectedStudent) {
+        const studentDocRef = doc(db, "activities", selectedStudent.id);
+        try {
+          console.log(selectedStudent.id);
+          // Create an object to store the activity data
+          const activityData = {
+            title: values.activityTitle,
+            description: values.activityDescription,
+            image: values.activityImage, // Base64 encoded image
+            email: selectedStudent.email,
+            timestamp: new Date().toISOString(),
+          };
+
+          // Add the activity to the student's document
+          await setDoc(
+            studentDocRef,
+            {
+              activities: {
+                [new Date().getTime()]: activityData, // Use timestamp as unique key
+              },
+            },
+            { merge: true } // Merge new activity data with existing document
+          );
+
+          console.log("Activity added to Firebase:", activityData);
+          closeModal();
+        } catch (error) {
+          console.error("Error adding activity to Firebase:", error);
+        }
+      }
+    },
+  });*/
+
   return (
     <div className="other-activities">
       <div className="sidebar-div">
@@ -61,12 +106,13 @@ const OtherActivities = () => {
             activityData.map((activity) => (
               <div className="activity-card" key={activity.timestamp}>
                 <div className="activity-header">
-                  <h2>{activity.title}</h2>
-                  <p>{activity.description}</p>
+                  <h2>{activity.aTitle}</h2>
+                  <p>{activity.aDescription}</p>
                 </div>
                 <div className="activity-footer">
                   <p>Datum: {activity.timestamp || "Nije postavljen datum"}</p>
                   <button
+                    className="activity-button"
                     onClick={() => {
                       openModal(activity.timestamp); // Use timestamp as unique identifier
                       setActivityTitle(activity.title);
@@ -82,13 +128,6 @@ const OtherActivities = () => {
           )}
         </div>
       </div>
-
-      <SubmitActivityModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        activityTitle={activityTitle}
-        activityId={selectedActivityId}
-      />
     </div>
   );
 };
