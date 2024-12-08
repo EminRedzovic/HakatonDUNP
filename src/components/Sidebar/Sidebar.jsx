@@ -180,6 +180,14 @@ const Sidebar = () => {
               <li
                 className="object-li-div last-li"
                 onClick={() => {
+                  navigate("/activities");
+                }}
+              >
+                Vannastavna aktivnost <RiPsychotherapyFill />
+              </li>
+              <li
+                className="object-li-div last-li"
+                onClick={() => {
                   navigate("/psychologist");
                 }}
               >

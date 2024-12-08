@@ -60,7 +60,6 @@ const CreateHomeWork = () => {
         const data = {
           ...values,
           profesor: profile.email,
-
           work: [],
           image: imageFile ? URL.createObjectURL(imageFile) : null,
         };

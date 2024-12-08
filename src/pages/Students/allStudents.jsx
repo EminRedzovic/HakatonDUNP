@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StarRating from "../../assets/StarRating";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./allStudents.css";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -62,15 +62,12 @@ const Students = () => {
       activityImage: null,
       activityTitle: "",
       uDescription: "",
-      uImage: null
-      
+      uImage: null,
     },
     validationSchema,
     onSubmit: async (values) => {
       if (selectedStudent) {
-        const studentDocRef = doc(db, "activities",selectedStudent.id);
         try {
-          console.log(selectedStudent.id);
           // Create an object to store the activity data
           const activityData = {
             aTitle: values.activityTitle,
@@ -83,16 +80,11 @@ const Students = () => {
             timestamp: new Date().toISOString(),
           };
 
-          // Add the activity to the student's document
-          await setDoc(
-            studentDocRef,
-            {
-              activities: {
-                [new Date().getTime()]: activityData, // Use timestamp as unique key
-              },
-            },
-            { merge: true } // Merge new activity data with existing document
-          );
+          // Get the activities collection reference
+          const activitiesCollectionRef = collection(db, "activities");
+
+          // Add the activity to Firestore under the "activities" collection
+          await addDoc(activitiesCollectionRef, activityData);
 
           console.log("Activity added to Firebase:", activityData);
           closeModal();

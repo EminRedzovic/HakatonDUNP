@@ -52,21 +52,26 @@ const SubmitedForm = () => {
           <div key={index} className="card">
             <div className="status">
               {task.submitted ? (
-                <span className="status-submitted">Domaći je predat</span>
-              ) : (
                 <span className="status-not-submitted">Domaći nije predat</span>
+              ) : (
+                <span className="status-submitted">Domaći je predat</span>
               )}
             </div>
 
-            <div className="card-body">
+            <div
+              className="card-body"
+              onClick={() => {
+                console.log(task.work[0]);
+              }}
+            >
               <div className="card-header">
                 <img className="task-image" src={image} alt="Task" />
                 <div className="task-details">
                   <p>
-                    <strong>Učenik:</strong> {task.work[0].fullName}
+                    <strong>Učenik:</strong> {task.work[0].autor}
                   </p>
                   <p>
-                    <strong>Datum:</strong> {task.date}
+                    <strong>Datum:</strong> {task.work[0].poslato}
                   </p>
                   <p>
                     <strong>Opis:</strong> {task.description}
@@ -79,7 +84,7 @@ const SubmitedForm = () => {
                   <div className="teacher-feedback">
                     <p>
                       <strong>Komentar nastavnika:</strong>{" "}
-                      {task.teacherComment}
+                      {task.work[0].opisNastavnik}
                     </p>
                     <div className="grade">
                       <p
@@ -91,7 +96,7 @@ const SubmitedForm = () => {
                         <strong>
                           Ocena:
                           <StarRating
-                            initialRating={4}
+                            initialRating={task.work[0].ocena}
                             totalStars={5}
                             isEditable={false}
                           />
@@ -101,43 +106,7 @@ const SubmitedForm = () => {
                   </div>
                 </>
               )}
-
-              <div className="approval-status">
-                <p>
-                  {task.approved === "Waiting" ? (
-                    <button
-                      style={{
-                        backgroundColor: "#E66562",
-                      }}
-                    >
-                      Nije odobreno
-                    </button>
-                  ) : task.approved ? (
-                    <button onClick={openModal}>Odobreno</button>
-                  ) : (
-                    "Ne"
-                  )}
-                </p>
-              </div>
-              <div className="pdf-link">
-                {task.pdfLink && (
-                  <a
-                    href={task.pdfLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="pdf-text-link"
-                  >
-                    Pogledaj domaći PDF
-                  </a>
-                )}
-              </div>
             </div>
-            <SubmitHomeworkModal
-              isOpen={isModalOpen}
-              onClose={closeModal}
-              username={username}
-              taskTitle={taskTitle}
-            />
           </div>
         ))}
       </div>

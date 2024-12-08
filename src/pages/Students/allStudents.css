@@ -54,7 +54,9 @@
   justify-content: center;
   align-items: center;
 }
-
+.students-side {
+  width: 100%;
+}
 .student-header {
   background-color: #2c3e45;
   padding: 25px 45px !important;

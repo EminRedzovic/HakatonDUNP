@@ -114,7 +114,7 @@ body {
 }
 
 .status-not-submitted {
-  background-color: #f44336;
+  /* background-color: #f44336; */
   letter-spacing: 1px;
 }
 
