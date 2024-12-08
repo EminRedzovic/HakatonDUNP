@@ -2,24 +2,26 @@ import React, { useEffect, useState } from "react";
 import StarRating from "../../assets/StarRating";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import "./otherActivities.css";
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 import "../../components/modal.css";
-
+import { ToastContainer, toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import Toast styles
 
 const OtherActivities = () => {
-  const [activityData, setActivityData] = useState([]); // Ovo sada sadrži sve aktivnosti
+  const [activityData, setActivityData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedActivityId, setSelectedActivityId] = useState(null);
-  const [activityTitle, setActivityTitle] = useState([]);
+  const [activityTitle, setActivityTitle] = useState("");
+  const [uDescription, setUDescription] = useState("");
+  const [uImage, setUImage] = useState(null);
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token"); // Token koji predstavlja trenutnog korisnika
   const activitiesCollection = collection(db, "activities");
 
-  const openModal = (id) => {
+  const openModal = (id, title) => {
     setSelectedActivityId(id);
+    setActivityTitle(title);
     setIsModalOpen(true);
   };
 
@@ -28,70 +30,46 @@ const OtherActivities = () => {
   const getAllActivities = async () => {
     try {
       const data = await getDocs(activitiesCollection);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-
-      // Assuming that activities data is stored as an object with keys as IDs
-      const activitiesArray = Object.values(filteredData[0]?.activities || []); // Convert to array
-
-      setActivityData(activitiesArray); // Postavi sve aktivnosti u state
+      const filteredData = data.docs
+        .map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }))
+        .filter(
+          (activity) =>
+            activity.email === token && activity.status !== "finished"
+        ); // Filter to exclude finished activities
+      setActivityData(filteredData); // Set filtered activities to state
     } catch (error) {
       console.error("Error fetching activities:", error);
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const activityRef = doc(db, "activities", selectedActivityId);
+      await updateDoc(activityRef, {
+        uDescription: uDescription,
+        uImage: uImage ? uImage : null,
+        status: "finished", // Mark as finished
+      });
+      setIsModalOpen(false);
+      toast.success("Activity finished successfully!"); // Show toast success message
+      getAllActivities();
+    } catch (error) {
+      console.error("Error updating activity:", error);
+    }
+  };
+
   useEffect(() => {
     if (token) {
-      getAllActivities(); // Pozivamo funkciju za učitavanje svih aktivnosti
+      getAllActivities();
     }
   }, [token]);
 
-  /* const formik = useFormik({
-    initialValues: {
-      Opis: "",
-      image: null,
-      activityTitle: "",
-      studentData: selectedStudent,
-    },
-    validationSchema,
-    onSubmit: async (values) => {
-      if (selectedStudent) {
-        const studentDocRef = doc(db, "activities", selectedStudent.id);
-        try {
-          console.log(selectedStudent.id);
-          // Create an object to store the activity data
-          const activityData = {
-            title: values.activityTitle,
-            description: values.activityDescription,
-            image: values.activityImage, // Base64 encoded image
-            email: selectedStudent.email,
-            timestamp: new Date().toISOString(),
-          };
-
-          // Add the activity to the student's document
-          await setDoc(
-            studentDocRef,
-            {
-              activities: {
-                [new Date().getTime()]: activityData, // Use timestamp as unique key
-              },
-            },
-            { merge: true } // Merge new activity data with existing document
-          );
-
-          console.log("Activity added to Firebase:", activityData);
-          closeModal();
-        } catch (error) {
-          console.error("Error adding activity to Firebase:", error);
-        }
-      }
-    },
-  });*/
-
   return (
-    <div className="other-activities">
+    <div className="students-page">
       <div className="sidebar-div">
         <Sidebar />
       </div>
@@ -107,18 +85,15 @@ const OtherActivities = () => {
               <div className="activity-card" key={activity.timestamp}>
                 <div className="activity-header">
                   <h2>{activity.aTitle}</h2>
-                  <p>{activity.aDescription}</p>
                 </div>
                 <div className="activity-footer">
+                  <p>{activity.aDescription}</p>
                   <p>Datum: {activity.timestamp || "Nije postavljen datum"}</p>
                   <button
                     className="activity-button"
-                    onClick={() => {
-                      openModal(activity.timestamp); // Use timestamp as unique identifier
-                      setActivityTitle(activity.title);
-                    }}
+                    onClick={() => openModal(activity.id, activity.aTitle)}
                   >
-                    Pridruži se
+                    Zavrsi
                   </button>
                 </div>
               </div>
@@ -128,6 +103,56 @@ const OtherActivities = () => {
           )}
         </div>
       </div>
+
+      {/* Modal for finishing activity */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Finish Activity: {activityTitle}</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="modal-input-group">
+                <label htmlFor="uDescription">Opis završetka aktivnosti</label>
+                <textarea
+                  id="uDescription"
+                  value={uDescription}
+                  onChange={(e) => setUDescription(e.target.value)}
+                  placeholder="Unesite opis završetka aktivnosti"
+                  required
+                />
+              </div>
+
+              <div className="modal-input-group">
+                <label htmlFor="uImage">Dodajte sliku</label>
+                <input
+                  type="file"
+                  id="uImage"
+                  accept="image/*"
+                  onChange={(e) =>
+                    setUImage(URL.createObjectURL(e.target.files[0]))
+                  }
+                />
+                {uImage && (
+                  <img
+                    src={uImage}
+                    alt="Uploaded preview"
+                    style={{ width: "100px", height: "auto" }}
+                  />
+                )}
+              </div>
+
+              <div className="modal-button-group">
+                <button type="submit">Završi Aktivnost</button>
+                <button type="button" onClick={closeModal}>
+                  Zatvori
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ToastContainer to display toast notifications */}
+      <ToastContainer />
     </div>
   );
 };

@@ -12,7 +12,8 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css";
 const validationSchema = Yup.object({
   description: Yup.string()
     .required("Opis zadatka je obavezan")
@@ -109,6 +110,7 @@ const SubmitHomeworkModal = ({
           work: arrayUnion(newWork),
         });
         getAllHomeWorks();
+        toast.success("Domaći zadatak uspešno poslat!");
         onClose();
 
         console.log("Homework uspešno ažuriran!");
@@ -213,6 +215,7 @@ const SubmitHomeworkModal = ({
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

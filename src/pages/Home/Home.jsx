@@ -12,6 +12,8 @@ import {
 } from "firebase/firestore";
 import SubmitHomeworkModal from "../../components/modal";
 import StarRating from "../../assets/StarRating";
+import { ToastContainer, toast } from "react-toastify"; // Import toast
+import "react-toastify/dist/ReactToastify.css"; // Import Toast style
 
 const Home = () => {
   const [unfinishedHomeworks, setUnfinishedHomeworks] = useState([]);
@@ -140,6 +142,7 @@ const Home = () => {
       });
 
       console.log("Domaći zadatak je uspešno ocenjen!");
+
       getAllHomeWorks(); // Osveži podatke nakon ažuriranja
     } catch (err) {
       console.error("Greška prilikom ocenjivanja:", err);
@@ -188,64 +191,63 @@ const Home = () => {
                   {unfinishedHomeworks.length > 0 ? (
                     unfinishedHomeworks.map((homework) => (
                       <>
-                        {homework.work.map(
-                          (item) =>
-                            item.status !== "graded" ? ( // Prikazivanje samo ako status nije "graded"
-                              <div className="homework-home" key={item.id}>
-                                <div className="homework-home-header">
-                                  <h2 className="homework-home-title">
-                                    {homework.title}
-                                  </h2>
-                                  <p className="homework-home-predmet">
-                                    {homework.predmet}
-                                  </p>
-                                </div>
+                        {homework.work.map((item) =>
+                          item.status !== "graded" ? ( // Prikazivanje samo ako status nije "graded"
+                            <div className="homework-home" key={item.id}>
+                              <div className="homework-home-header">
+                                <h2 className="homework-home-title">
+                                  {homework.title}
+                                </h2>
+                                <p className="homework-home-predmet">
+                                  {homework.predmet}
+                                </p>
+                              </div>
 
-                                <div className="homework-home-down">
-                                  <p className="homework-home-description">
-                                    {item.opis}
-                                  </p>
-                                  <StarRating
-                                    initialRating={0}
-                                    totalStars={5}
-                                    isEditable={true}
-                                    onRatingChange={handleRatingChange}
+                              <div className="homework-home-down">
+                                <p className="homework-home-description">
+                                  {item.opis}
+                                </p>
+                                <StarRating
+                                  initialRating={0}
+                                  totalStars={5}
+                                  isEditable={true}
+                                  onRatingChange={handleRatingChange}
+                                />
+                                <p className="homework-home-date">
+                                  Rok: {homework.dueDate}
+                                </p>
+                                <div className="homework-home-rating">
+                                  <textarea
+                                    className="homework-home-textarea"
+                                    placeholder="Unesite komentar ili opis ocene..."
+                                    onChange={handleOpisChange}
                                   />
-                                  <p className="homework-home-date">
-                                    Rok: {homework.dueDate}
-                                  </p>
-                                  <div className="homework-home-rating">
-                                    <textarea
-                                      className="homework-home-textarea"
-                                      placeholder="Unesite komentar ili opis ocene..."
-                                      onChange={handleOpisChange}
-                                    />
-                                  </div>
-                                  <div className="homework-home-buttons-div">
-                                    <button
-                                      className="homework-home-button-resi"
-                                      onClick={() => {
-                                        oceniHomework(
-                                          homework.id,
-                                          rating,
-                                          homeworkOpis
-                                        );
-                                      }}
-                                    >
-                                      Oceni
-                                    </button>
-                                    <button
-                                      className="homework-home-button"
-                                      onClick={() => {
-                                        openImage(item.image);
-                                      }}
-                                    >
-                                      Otvori
-                                    </button>
-                                  </div>
+                                </div>
+                                <div className="homework-home-buttons-div">
+                                  <button
+                                    className="homework-home-button-resi"
+                                    onClick={() => {
+                                      oceniHomework(
+                                        homework.id,
+                                        rating,
+                                        homeworkOpis
+                                      );
+                                    }}
+                                  >
+                                    Oceni
+                                  </button>
+                                  <button
+                                    className="homework-home-button"
+                                    onClick={() => {
+                                      openImage(item.image);
+                                    }}
+                                  >
+                                    Otvori
+                                  </button>
                                 </div>
                               </div>
-                            ) : null // Ako je status "graded", neće se prikazati
+                            </div>
+                          ) : null
                         )}
                       </>
                     ))
@@ -318,7 +320,13 @@ const Home = () => {
                           </p>
 
                           <div className="homework-home-buttons-div">
-                            <button className="homework-home-button">
+                            <button
+                              className="homework-home-button"
+                              onClick={() => {
+                                openImage(homework.image);
+                                console.log(homework);
+                              }}
+                            >
                               Otvori
                             </button>
                             <button
@@ -376,6 +384,7 @@ const Home = () => {
                     ))}
                   </div>
                 </div>
+                <ToastContainer />
               </div>
             </>
           )
