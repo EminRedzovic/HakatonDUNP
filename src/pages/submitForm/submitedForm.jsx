@@ -1,41 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./submitedForm.css";
 import image from "../../assets/profile.png";
 import SubmitHomeworkModal from "../../components/modal";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import StarRating from "../../assets/StarRating";
+import { useParams } from "react-router-dom";
+import { getDocs, collection } from "firebase/firestore";
+import { db } from "../../firebase";
 
 const SubmitedForm = () => {
+  const { homeworkid } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const username = "Marko Marković";
   const taskTitle = "Matematika - Sabiranje";
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const [homework, setHomework] = useState([
-    {
-      submitted: true,
-      image: "image_path_here",
-      description: "Opis domaćeg zadatka...",
-      teacherComment: "Odlično urađeno, ali obrati pažnju na zadatak 3.",
-      recension: 5,
-      approved: true,
-      date: "2024-12-06",
-      pdfLink: "path_to_pdf_here",
-      student: "Marko Marković",
-    },
-    {
-      submitted: true,
-      image: "image_path_here",
-      description: "Opis domaćeg zadatka...",
-      teacherComment: "Odlično urađeno, ali obrati pažnju na zadatak 3.",
-      recension: 5,
-      approved: "Waiting",
-      date: "2024-12-06",
-      pdfLink: "path_to_pdf_here",
-      student: "Jovana Jovanović",
-    },
-  ]);
+  const [homework, setHomework] = useState([]);
+
+  const getHomework = async () => {
+    // Use collection() to specify the collection you want to query
+    const homeworkCollection = collection(db, "homework");
+    const data = await getDocs(homeworkCollection);
+
+    // Map the documents and extract the data
+    const filteredData = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    // Filter the homework by the id from the URL params
+    const myHomework = filteredData.filter(
+      (homework) => homework.id === homeworkid
+    );
+
+    setHomework(myHomework);
+  };
+
+  useEffect(() => {
+    getHomework();
+  }, [homeworkid]); // Adding homeworkid as a dependency to refetch when the ID changes
 
   return (
     <div className="sabmit-container">
@@ -50,9 +54,7 @@ const SubmitedForm = () => {
               {task.submitted ? (
                 <span className="status-submitted">Domaći je predat</span>
               ) : (
-                <span className="status-not-submitted">
-                  Domaći nije predate
-                </span>
+                <span className="status-not-submitted">Domaći nije predat</span>
               )}
             </div>
 
@@ -61,7 +63,7 @@ const SubmitedForm = () => {
                 <img className="task-image" src={image} alt="Task" />
                 <div className="task-details">
                   <p>
-                    <strong>Učenik:</strong> {task.student}
+                    <strong>Učenik:</strong> {task.work[0].fullName}
                   </p>
                   <p>
                     <strong>Datum:</strong> {task.date}

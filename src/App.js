@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/submitedForm" element={<SubmitedForm />} />
+        <Route path="/submitedForm/:homeworkid" element={<SubmitedForm />} />
         <Route path="/teacher/createHomeWork" element={<CreateHomeWork />} />
         <Route
           path="/teacher/createNewStudent"

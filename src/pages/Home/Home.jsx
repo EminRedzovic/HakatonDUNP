@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { MdMapsHomeWork } from "react-icons/md";
-import { GiArmorUpgrade } from "react-icons/gi";
-import { FaComment } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -250,7 +247,12 @@ const Home = () => {
                 <div className="complited-homeworks">
                   <div className="finished-homeworks-div">
                     {finishedHomeworks.map((homework) => (
-                      <div className="homework-home" key={homework.id}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        className="homework-home"
+                        key={homework.id}
+                        onClick={() => navigate(`/submitedForm/${homework.id}`)}
+                      >
                         <div className="homework-home-header">
                           <h2 className="homework-home-title">
                             {homework.title}
