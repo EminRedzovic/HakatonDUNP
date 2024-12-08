@@ -16,8 +16,7 @@
 .homework {
   color: white;
   border-radius: 20px;
-  box-shadow: 0px 0px 5px grey;
-  min-width: calc(50% - 10px); /* Ensure two items fit per row */
+  min-width: calc(50% - 10px);
   margin-top: 20px;
   cursor: pointer;
 }
