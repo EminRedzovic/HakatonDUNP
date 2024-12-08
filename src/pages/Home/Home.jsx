@@ -78,7 +78,7 @@ const Home = () => {
         ...doc.data(),
         id: doc.id,
       }));
-  
+
       const myClassHomeworks = filteredData.filter(
         (homework) => homework.odeljenje === myProfile.odeljenje
       );
@@ -94,7 +94,7 @@ const Home = () => {
           Array.isArray(item.work) &&
           !item.work.some((workItem) => workItem.autor === token)
       );
-  
+
       setUnfinishedHomeworks(unfinishedHomeworks);
       setFinishedHomeworks(finishedHomeworks);
       setHomeworks(myClassHomeworks);
@@ -145,8 +145,6 @@ const Home = () => {
       console.error("Greška prilikom ocenjivanja:", err);
     }
   };
-
-  console.log(finishedHomeworks, "123");
 
   useEffect(() => {
     if (!token) {
@@ -274,14 +272,14 @@ const Home = () => {
                             {homework.description}
                           </p>
                           <StarRating
-                            initialRating={homework.ocena}
+                            initialRating={homework.work[0].ocena}
                             totalStars={5}
                             isEditable={false}
 
                             // Set to true for editable stars
                           />
                           <p className="homework-home-date">
-                            Rok: {homework.dueDate}/{homework.work.status}
+                            Rok: {homework.dueDate}/{homework.work[0].status}
                           </p>
                         </div>
                       </div>
@@ -366,12 +364,12 @@ const Home = () => {
                             {homework.description}
                           </p>
                           <StarRating
-                            initialRating={homework.ocena}
+                            initialRating={homework.work[0].ocena}
                             totalStars={5}
-                            isEditable={false} // Set to true for editable stars
+                            isEditable={false}
                           />
                           <p className="homework-home-date">
-                            Rok: {homework.dueDate}/{homework.work.status}
+                            Rok: {homework.dueDate}/{homework.work[0].status}
                           </p>
                         </div>
                       </div>
