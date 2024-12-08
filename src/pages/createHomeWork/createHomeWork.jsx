@@ -8,7 +8,6 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./createHomeWork.css";
-import { MdMapsHomeWork } from "react-icons/md";
 
 const CreateHomeWork = () => {
   const navigate = useNavigate();
@@ -47,8 +46,8 @@ const CreateHomeWork = () => {
       description: "",
       dueDate: "",
       predmet: "",
+
       image: null,
-      ocena: null,
     },
     enableReinitialize: true, // Omogućava ažuriranje inicijalnih vrednosti
     validationSchema: Yup.object({
@@ -60,6 +59,9 @@ const CreateHomeWork = () => {
       try {
         const data = {
           ...values,
+          profesor: profile.email,
+
+          work: [],
           image: imageFile ? URL.createObjectURL(imageFile) : null,
         };
 

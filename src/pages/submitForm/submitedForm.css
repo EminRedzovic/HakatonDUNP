@@ -18,6 +18,11 @@ body {
   margin-top: 5%;
   width: 100%;
 }
+.grade {
+  width: 100% !important;
+  flex-direction: row;
+  display: flex;
+}
 .sabmit-container {
   display: flex;
 }

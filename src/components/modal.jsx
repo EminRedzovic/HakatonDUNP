@@ -10,14 +10,7 @@ const validationSchema = Yup.object({
   description: Yup.string()
     .required("Opis zadatka je obavezan")
     .min(10, "Opis zadatka mora imati najmanje 10 karaktera"),
-  homeworkFile: Yup.mixed()
-    .required("Priložite domaći PDF")
-    .test("fileSize", "Datoteka je prevelika", (value) => {
-      return value && value.size <= 5000000;
-    })
-    .test("fileFormat", "Format mora biti PDF", (value) => {
-      return value && value.type === "application/pdf";
-    }),
+  homeworkImage: Yup.mixed().required("Priložite sliku domaćeg zadatka"),
 });
 
 const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
@@ -25,10 +18,11 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({
     title: taskTitle,
-    homeworkFile: null,
+    homeworkImage: null,
     description: "",
     username: "",
   });
+  const [imagePreview, setImagePreview] = useState(null);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const userCollection = collection(db, "users");
@@ -64,7 +58,7 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
     if (myProfile.length > 0) {
       setInitialValues((prevValues) => ({
         ...prevValues,
-        username: myProfile[0]?.name || "",
+        username: myProfile[0]?.email || "",
       }));
     }
   }, [myProfile]);
@@ -86,12 +80,25 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
     },
   });
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      formik.setFieldValue("homeworkImage", file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   if (!isOpen || loading) return null;
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h2 className="modal-header">Postavite domaći zadatak</h2>
+        <h2 className="modal-header">Zavrsite domaći zadatak</h2>
         <form onSubmit={formik.handleSubmit}>
           <div className="form-group">
             <label htmlFor="title">Naslov zadatka</label>
@@ -121,26 +128,36 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
             ) : null}
           </div>
           <div className="form-group">
-            <label htmlFor="homeworkFile">Priložite domaći PDF</label>
+            <label htmlFor="homeworkImage">
+              Priložite sliku domaćeg zadatka
+            </label>
             <input
               type="file"
-              id="homeworkFile"
-              name="homeworkFile"
-              onChange={(event) => {
-                formik.setFieldValue(
-                  "homeworkFile",
-                  event.currentTarget.files[0]
-                );
-              }}
-              accept=".pdf"
+              id="homeworkImage"
+              name="homeworkImage"
+              onChange={handleImageChange}
+              accept="image/*"
               className="file-input"
             />
-            {formik.touched.homeworkFile && formik.errors.homeworkFile ? (
-              <div className="errorModal">{formik.errors.homeworkFile}</div>
+            {formik.touched.homeworkImage && formik.errors.homeworkImage ? (
+              <div className="errorModal">{formik.errors.homeworkImage}</div>
             ) : null}
+            {imagePreview && (
+              <img
+                src={imagePreview}
+                alt="Preview"
+                style={{
+                  width: "200px",
+                  height: "auto",
+                  maxHeight: "250px",
+                  marginTop: "10px",
+                  aspectRatio: "auto",
+                }}
+              />
+            )}
           </div>
           <div className="form-group">
-            <label htmlFor="username">Korisničko ime</label>
+            <label htmlFor="username">Korisničk email</label>
             <input
               type="text"
               id="username"

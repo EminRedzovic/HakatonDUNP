@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { MdMapsHomeWork } from "react-icons/md";
@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [selectedButton, setSelectedButton] = useState(null);
+
   const navigate = useNavigate();
 
+  useEffect(() => {}, []);
   const handleButtonClick = (button) => {
     setSelectedButton(button);
   };

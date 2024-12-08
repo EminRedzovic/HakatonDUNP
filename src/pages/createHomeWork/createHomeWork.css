@@ -17,7 +17,7 @@
 .create-homework-container {
   width: 100%;
   max-width: 950px;
-  max-height: 850px;
+  max-height: 900px;
   padding: 20px 40px;
   background-color: #f4f6f7;
   border-radius: 15px;
@@ -113,4 +113,55 @@ textarea {
   color: red;
   margin-top: 5px;
   font-weight: 400;
+}
+/* Image Preview Styles */
+.create-homework-image-preview {
+  margin-top: 10px;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid #dfe4ea;
+  display: block;
+  overflow: hidden; /* Ovo sprečava da slika izlazi izvan okvira */
+}
+
+/* Prevent image from breaking the layout */
+.create-homework-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ensuring proper scaling of image preview */
+.create-homework-image-preview img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent the form from moving out of view */
+.create-homework-container {
+  min-height: 500px; /* Postavite minimalnu visinu koja odgovara sadržaju */
+  overflow: auto; /* Dodajte ako je potrebno da se omogućiti skrolovanje */
+  box-sizing: border-box; /* Obezbedite da padding ne pravi problem u dimenzijama */
+}
+
+.create-homework-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.create-homework-container::-webkit-scrollbar-track {
+  background-color: #f4f6f7;
+}
+
+.create-homework-container::-webkit-scrollbar-thumb {
+  background-color: #82cabf;
+  border-radius: 10px;
+}
+
+.create-homework-container::-webkit-scrollbar-thumb:hover {
+  background-color: #88d1cd;
 }
