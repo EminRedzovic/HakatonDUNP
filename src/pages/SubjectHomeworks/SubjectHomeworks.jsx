@@ -12,8 +12,6 @@ const SubjectHomeworks = () => {
   const [homeworks, setHomeworks] = useState([]);
   const [myProfile, setMyProfile] = useState(null);
   const token = localStorage.getItem("token");
-  const [homeworkData, setHomeworkData] = useState([]);
-  const [homework, setHomework] = useState("");
 
   const getMyProfile = async () => {
     try {
@@ -90,7 +88,7 @@ const SubjectHomeworks = () => {
         <div className="homeworks">
           {homeworks.length > 0 ? (
             homeworks.map((homework) => (
-              <div className="homework-home" key={homework.id}>
+              <div className="homework-home">
                 <div className="homework-home-header">
                   <h2 className="homework-home-title">{homework.title}</h2>
                   <p className="homework-home-predmet">{homework.predmet}</p>
@@ -104,18 +102,7 @@ const SubjectHomeworks = () => {
 
                   <div className="homework-home-buttons-div">
                     <button className="homework-home-button">Otvori</button>
-                    <button
-                      className="homework-home-button-resi"
-                      onClick={() => {
-                        openModal(homework.id);
-                        setHomework(homework.title);
-                        setHomeworkData(homework);
-                        getAllHomeWorks(getAllHomeWorks());
-                      }}
-                      // Prosleđujemo ID
-                    >
-                      Resi
-                    </button>
+                    <button className="homework-home-button-resi">Resi</button>
                   </div>
                 </div>
               </div>
