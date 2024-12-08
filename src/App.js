@@ -8,6 +8,7 @@ import CreateHomeWork from "./pages/createHomeWork/createHomeWork";
 import CreateNewStudent from "./pages/createNewStudent/createNewStudent";
 import Students from "./pages/Students/allStudents";
 import Psychologist from "./pages/psychologist/psychologist";
+import OtherActivities from "./pages/otherActivities/otherActivities";
 import SubjectHomeworks from "./pages/SubjectHomeworks/SubjectHomeworks";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           element={<CreateNewStudent />}
         />
         <Route path="/teacher/students" element={<Students />} />
+        <Route path="/activities" element={<OtherActivities />} />
         <Route path="/register" element={<TeacherRegister />} />
         <Route path="/psychologist" element={<Psychologist />} />
         <Route path="/login" element={<TeacherLogin />} />
