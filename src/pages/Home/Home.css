@@ -31,11 +31,9 @@
 .sidebar-div {
   width: 30%;
 }
-.students-side {
-  width: 100%;
-}
+
 .home-main {
-  width: 100%;
+  width: 100% !important;
   height: 100vh;
   overflow-y: auto;
   padding: 50px;

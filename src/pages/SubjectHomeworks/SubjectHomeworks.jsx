@@ -71,7 +71,7 @@ const SubjectHomeworks = () => {
 
   useEffect(() => {
     getAllHomeWorks();
-  }, [myProfile]);
+  }, [myProfile, subject]);
 
   console.log(myProfile);
   console.log(homeworks);
