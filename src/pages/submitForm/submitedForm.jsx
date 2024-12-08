@@ -3,6 +3,7 @@ import "./submitedForm.css";
 import image from "../../assets/profile.png";
 import SubmitHomeworkModal from "../../components/modal";
 import Sidebar from "../../components/Sidebar/Sidebar";
+import StarRating from "../../assets/StarRating";
 
 const SubmitedForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -78,9 +79,23 @@ const SubmitedForm = () => {
                       <strong>Komentar nastavnika:</strong>{" "}
                       {task.teacherComment}
                     </p>
-                    <p>
-                      <strong>Ocena:</strong> {task.recension} zvezdica
-                    </p>
+                    <div className="grade">
+                      <p
+                        style={{
+                          display: "inline",
+                          width: "100%",
+                        }}
+                      >
+                        <strong>
+                          Ocena:
+                          <StarRating
+                            initialRating={4}
+                            totalStars={5}
+                            isEditable={false}
+                          />
+                        </strong>
+                      </p>
+                    </div>
                   </div>
                 </>
               )}

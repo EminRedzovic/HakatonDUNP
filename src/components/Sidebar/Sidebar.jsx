@@ -107,7 +107,12 @@ const Sidebar = () => {
               >
                 Dodaj Domaći zadatak <MdNoteAdd />
               </li>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/teacher/students");
+                }}
+              >
                 Učenici <FaUserFriends />
               </li>
               <li

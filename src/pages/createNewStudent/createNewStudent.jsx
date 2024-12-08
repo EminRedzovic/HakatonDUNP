@@ -40,7 +40,7 @@ const CreateNewStudent = () => {
             email: values.email,
             odeljenje: values.odeljenje,
             razredni: auth.currentUser.email,
-            homework: [],
+            ratings: [],
             isTeacher: false,
           };
 

@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useEffect, useState } from "react";
+
 import "./Home.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { MdMapsHomeWork } from "react-icons/md";
@@ -10,6 +12,7 @@ import { collection, getDocs } from "firebase/firestore";
 
 const Home = () => {
   const [selectedButton, setSelectedButton] = useState(null);
+
   const navigate = useNavigate();
   const homeworkCollection = collection(db, "homework");
   const userCollection = collection(db, "users");
@@ -73,6 +76,7 @@ const Home = () => {
     getAllHomeWorks();
   }, [myProfile]);
 
+  useEffect(() => {}, []);
   const handleButtonClick = (button) => {
     setSelectedButton(button);
   };
