@@ -94,29 +94,22 @@ const SubmitHomeworkModal = ({
     validationSchema,
     onSubmit: async (values) => {
       try {
-        // Prvo proverimo da li imamo važeće vrednosti
         const newWork = {
-          image: values.homeworkImage, // Base64 string, ovo je OK
+          image: values.homeworkImage,
           autor: myProfile[0]?.email || "",
           ocena: null,
-          poslato: new Date().toISOString(), // ISO string je u redu
+          poslato: new Date().toISOString(),
           opis: values.description,
           opisNastavnik: "",
           status: "waiting",
         };
 
-        // Pokušaj da ažuriraš dokument bez previše dubokih objekata
-        const updatedWork = {
-          ...homeworkData.work,
-          newWork, // Dodajemo novi work, sa osnovnim podacima
-        };
-
         const homeworkRef = doc(db, "homework", homeworkId);
 
-        // Ažuriraj samo relevantna polja, izbegavaj prekomplicirane objekte
         await updateDoc(homeworkRef, {
-          "work.newWork": newWork, // Direkno ažuriraj samo ovo polje
+          work: arrayUnion(newWork),
         });
+        onClose();
 
         console.log("Homework uspešno ažuriran!");
       } catch (err) {
@@ -196,7 +189,6 @@ const SubmitHomeworkModal = ({
                   height: "auto",
                   maxHeight: "250px",
                   marginTop: "10px",
-                  aspectRatio: "auto",
                 }}
               />
             )}

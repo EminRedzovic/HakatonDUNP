@@ -96,7 +96,12 @@ const Sidebar = () => {
         {myProfile ? (
           myProfile.isTeacher ? (
             <ul>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
                 Domaći zadaci <PiExamFill />
               </li>
               <li
