@@ -88,16 +88,22 @@ const SubjectHomeworks = () => {
         <div className="homeworks">
           {homeworks.length > 0 ? (
             homeworks.map((homework) => (
-              <div className="homework">
-                <div className="homework-header">
-                  <h2 className="homework-title">{homework.title}</h2>
-                  <p className="homework-predmet">{homework.predmet}</p>
+              <div className="homework-home">
+                <div className="homework-home-header">
+                  <h2 className="homework-home-title">{homework.title}</h2>
+                  <p className="homework-home-predmet">{homework.predmet}</p>
                 </div>
 
-                <div className="homework-down">
-                  <p className="homework-description">{homework.description}</p>
-                  <p className="homework-date">Rok: {homework.dueDate}</p>
-                  <button className="homework-button">Otvori</button>
+                <div className="homework-home-down">
+                  <p className="homework-home-description">
+                    {homework.description}
+                  </p>
+                  <p className="homework-home-date">Rok: {homework.dueDate}</p>
+
+                  <div className="homework-home-buttons-div">
+                    <button className="homework-home-button">Otvori</button>
+                    <button className="homework-home-button-resi">Resi</button>
+                  </div>
                 </div>
               </div>
             ))

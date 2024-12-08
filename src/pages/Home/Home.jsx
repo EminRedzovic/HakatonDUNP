@@ -7,15 +7,28 @@ import { FaComment } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import SubmitHomeworkModal from "../../components/modal";
+import StarRating from "../../assets/StarRating";
 
 const Home = () => {
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [unfinishedHomeworks, setUnfinishedHomeworks] = useState([]);
+  const [finishedHomeworks, setFinishedHomeworks] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedHomeworkId, setSelectedHomeworkId] = useState(null);
+  const openModal = (id) => {
+    setSelectedHomeworkId(id);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => setIsModalOpen(false);
 
   const navigate = useNavigate();
   const homeworkCollection = collection(db, "homework");
   const userCollection = collection(db, "users");
   const [homeworks, setHomeworks] = useState([]);
   const [myProfile, setMyProfile] = useState(null);
+  const [homework, setHomework] = useState("");
+  const [homeworkData, setHomeworkData] = useState([]);
+
   const token = localStorage.getItem("token");
 
   const getMyProfile = async () => {
@@ -32,7 +45,7 @@ const Home = () => {
         setMyProfile(userProfile);
       } else {
         console.error("Korisnik nije pronađen.");
-        setMyProfile(null); // Osiguranje
+        setMyProfile(null);
       }
     } catch (error) {
       console.error("Greška prilikom učitavanja profila:", error);
@@ -43,17 +56,29 @@ const Home = () => {
     if (myProfile) {
       const data = await getDocs(homeworkCollection);
       const filteredData = data.docs.map((doc) => ({
-        ...doc.data(), // Corrected to access doc.data() for homework data
-        id: doc.id, // Access doc.id directly
+        ...doc.data(),
+        id: doc.id,
       }));
 
       const myClassHomeworks = filteredData.filter(
         (homework) => homework.odeljenje === myProfile.odeljenje
       );
 
+      const finishedHomeworks = filteredData.filter((item) =>
+        item.work.some((workItem) => workItem.autor === token)
+      );
+
+      const unfinishedHomeworks = filteredData.filter(
+        (item) => !item.work.some((workItem) => workItem.autor === token)
+      );
+
+      setUnfinishedHomeworks(unfinishedHomeworks);
+      setFinishedHomeworks(finishedHomeworks);
       setHomeworks(myClassHomeworks);
     }
   };
+
+  console.log(finishedHomeworks, "123");
 
   useEffect(() => {
     if (!token) {
@@ -74,11 +99,6 @@ const Home = () => {
     getAllHomeWorks();
   }, [myProfile]);
 
-  useEffect(() => {}, []);
-  const handleButtonClick = (button) => {
-    setSelectedButton(button);
-  };
-
   return (
     <div className="home">
       <div className="sidebar-div">
@@ -86,45 +106,189 @@ const Home = () => {
       </div>
 
       <div className="home-main">
-        <h1 className="home-h1">Domaci zadaci</h1>
+        {myProfile ? (
+          myProfile.isTeacher ? (
+            <div>
+              <div className="home-h-div">
+                <h1 className="home-h1">Domaci zadaci</h1>
+                <h2 className="zdz">Zavrseni domaci zadaci</h2>
+              </div>
 
-        <div className="all-homeworks">
-          <div className="nezavrseni-domaci">
-            {homeworks.length > 0 ? (
-              homeworks.map((homework) => (
-                <div className="homework-home">
-                  <div className="homework-home-header">
-                    <h2 className="homework-home-title">{homework.title}</h2>
-                    <p className="homework-home-predmet">{homework.predmet}</p>
-                  </div>
+              <div className="all-homeworks">
+                <div className="nezavrseni-domaci">
+                  {unfinishedHomeworks.length > 0 ? (
+                    unfinishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
 
-                  <div className="homework-home-down">
-                    <p className="homework-home-description">
-                      {homework.description}
-                    </p>
-                    <p className="homework-home-date">
-                      Rok: {homework.dueDate}
-                    </p>
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}
+                          </p>
 
-                    <div className="homework-home-buttons-div">
-                      <button className="homework-home-button">Otvori</button>
-                      <button className="homework-home-button-resi">
-                        Resi
-                      </button>
-                    </div>
+                          <div className="homework-home-buttons-div">
+                            <button className="homework-home-button">
+                              Otvori
+                            </button>
+                            <button
+                              className="homework-home-button-resi"
+                              onClick={() => {
+                                openModal(homework.id);
+                                setHomework(homework.title);
+                                setHomeworkData(homework);
+                                getAllHomeWorks(getAllHomeWorks());
+                              }}
+                              // Prosleđujemo ID
+                            >
+                              Resi
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="ndz">Nema domacih zadataka :</p>
+                  )}
+                </div>
+
+                <div className="complited-homeworks">
+                  <div className="finished-homeworks-div">
+                    {finishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
+
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <StarRating
+                            initialRating={homework.ocena}
+                            totalStars={5}
+                            isEditable={false} // Set to true for editable stars
+                          />
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}/{homework.work.status}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="ndz">Nema domacih zadataka :)</p>
-            )}
-          </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="home-h-div">
+                <h1 className="home-h1">Domaci zadaci</h1>
+                <h2 className="zdz">Zavrseni domaci zadaci</h2>
+              </div>
 
-          <div className="complited-homeworks">
-            <h2 className="zdz">Zavrseni domaci zadaci</h2>
-          </div>
-        </div>
+              <div className="all-homeworks">
+                <div className="nezavrseni-domaci">
+                  {unfinishedHomeworks.length > 0 ? (
+                    unfinishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
+
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}
+                          </p>
+
+                          <div className="homework-home-buttons-div">
+                            <button className="homework-home-button">
+                              Otvori
+                            </button>
+                            <button
+                              className="homework-home-button-resi"
+                              onClick={() => {
+                                openModal(homework.id);
+                                setHomework(homework.title);
+                                setHomeworkData(homework);
+                                getAllHomeWorks(getAllHomeWorks());
+                              }}
+                              // Prosleđujemo ID
+                            >
+                              Resi
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="ndz">Nema domacih zadataka :</p>
+                  )}
+                </div>
+
+                <div className="complited-homeworks">
+                  <div className="finished-homeworks-div">
+                    {finishedHomeworks.map((homework) => (
+                      <div className="homework-home" key={homework.id}>
+                        <div className="homework-home-header">
+                          <h2 className="homework-home-title">
+                            {homework.title}
+                          </h2>
+                          <p className="homework-home-predmet">
+                            {homework.predmet}
+                          </p>
+                        </div>
+
+                        <div className="homework-home-down">
+                          <p className="homework-home-description">
+                            {homework.description}
+                          </p>
+                          <StarRating
+                            initialRating={homework.ocena}
+                            totalStars={5}
+                            isEditable={false} // Set to true for editable stars
+                          />
+                          <p className="homework-home-date">
+                            Rok: {homework.dueDate}/{homework.work.status}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </>
+          )
+        ) : null}
       </div>
+      <SubmitHomeworkModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        homework={homework}
+        homeworkId={selectedHomeworkId}
+        homeworkData={homeworkData}
+      />
     </div>
   );
 };
