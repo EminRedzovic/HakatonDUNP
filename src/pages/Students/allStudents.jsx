@@ -4,16 +4,21 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./allStudents.css";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebase";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import "../../components/modal.css";
 
 const Students = () => {
-  const [selectedRating, setSelectedRating] = useState(0); // Initial rating (e.g., fetched from a database)
   const [students, setStudents] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const coursesCollections = collection(db, "users");
-  // Function to handle the rating change
+
   const handleRatingChange = (rating) => {
-    setSelectedRating(rating);
-    console.log("Selected Rating: ", rating); // Log the selected rating
+    console.log("Selected Rating: ", rating);
   };
+
   const getStudents = async () => {
     const data = await getDocs(coursesCollections);
     const filteredData = data.docs
@@ -23,13 +28,56 @@ const Students = () => {
       }))
       .filter((doc) => !doc.isTeacher)
       .map(({ password, ...rest }) => rest);
-    console.log(filteredData);
     setStudents(filteredData);
   };
 
   useEffect(() => {
     getStudents();
   }, []);
+
+  const openModal = (student) => {
+    setSelectedStudent(student);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedStudent(null);
+    setImagePreview(null); // Reset image preview when closing modal
+  };
+
+  const validationSchema = Yup.object({
+    activityDescription: Yup.string()
+      .required("Opis aktivnosti je obavezan")
+      .min(10, "Opis aktivnosti mora imati najmanje 10 karaktera"),
+    activityImage: Yup.mixed().required("Slika aktivnosti je obavezna"),
+  });
+
+  const formik = useFormik({
+    initialValues: {
+      activityDescription: "",
+      activityImage: null,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log("Activity added: ", values);
+      closeModal();
+    },
+  });
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64Image = reader.result;
+        formik.setFieldValue("activityImage", base64Image);
+        setImagePreview(base64Image); // Show image preview in the UI
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="students-page">
       <div className="sidebar-div">
@@ -40,35 +88,111 @@ const Students = () => {
         <div className="all-students">
           {students.map((student) => {
             return (
-              <div className="student">
+              <div className="student" key={student.id}>
                 <div className="name-and-recension">
-                  <h1>{student.fullName}</h1>
-                  <h2>Recenzija: 4.7</h2>
-                  <StarRating
-                    initialRating={4}
-                    totalStars={5}
-                    isEditable={true} // Set to true for editable stars
-                    onRatingChange={handleRatingChange}
-                  />
+                  <div className="student-header">
+                    <h1>{student.fullName}</h1>
+                  </div>
+                  <div className="student-bottom">
+                    <h2>Recenzija: 4.7</h2>
+                    <StarRating
+                      initialRating={4}
+                      totalStars={5}
+                      isEditable={true}
+                      onRatingChange={handleRatingChange}
+                    />
+                  </div>
                 </div>
-                <button className="activity-button">
-                  Dodaj Vannastavnu aktivnost
-                </button>
+                <div className="activity-button">
+                  <button onClick={() => openModal(student)}>
+                    Dodaj Vannastavnu aktivnost
+                  </button>
+                </div>
               </div>
             );
           })}
-          {/* <div className="name-and-recension">
-              <h1>Daris Mavric</h1>
-              <h2>Recenzija: 4.7</h2>
-              <StarRating
-                initialRating={4}
-                totalStars={5}
-                isEditable={true} // Set to true for editable stars
-                onRatingChange={handleRatingChange}
-              />
-            </div> */}
         </div>
       </div>
+
+      {isModalOpen && selectedStudent && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2 className="modal-header">Dodajte Vannastavnu Aktivnost</h2>
+            <form onSubmit={formik.handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="studentName">Ime učenika</label>
+                <input
+                  type="text"
+                  id="studentName"
+                  value={selectedStudent.fullName}
+                  disabled
+                  className="input-field"
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="activityDescription">Opis aktivnosti</label>
+                <textarea
+                  id="activityDescription"
+                  name="activityDescription"
+                  value={formik.values.activityDescription}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  placeholder="Unesite opis vannastavne aktivnosti..."
+                  className="textarea-field"
+                />
+                {formik.touched.activityDescription &&
+                formik.errors.activityDescription ? (
+                  <div className="errorModal">
+                    {formik.errors.activityDescription}
+                  </div>
+                ) : null}
+              </div>
+              <div className="form-group">
+                <label htmlFor="activityImage">
+                  Priložite sliku aktivnosti
+                </label>
+                <input
+                  type="file"
+                  id="activityImage"
+                  name="activityImage"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                  className="file-input"
+                />
+                {formik.touched.activityImage && formik.errors.activityImage ? (
+                  <div className="errorModal">
+                    {formik.errors.activityImage}
+                  </div>
+                ) : null}
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    style={{
+                      width: "200px",
+                      height: "auto",
+                      maxHeight: "250px",
+                      marginTop: "10px",
+                    }}
+                  />
+                )}
+              </div>
+              <div className="modal-buttons">
+                <button type="submit" className="submit-button">
+                  Dodajte Aktivnost
+                </button>
+                <button
+                  type="button"
+                  className="cancel-button"
+                  onClick={closeModal}
+                >
+                  Zatvori
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
