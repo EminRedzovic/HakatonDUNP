@@ -69,7 +69,9 @@ const TeacherRegister = () => {
             console.log(err);
           }
         } else {
-          alert("Unesite postojeci predmet");
+          alert(
+            `Unesite postojeci predmet ${predmeti.map((predmet) => predmet)}`
+          );
         }
       } else {
         alert("Vec ste prijavljeni!");

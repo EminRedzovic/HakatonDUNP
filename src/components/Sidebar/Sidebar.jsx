@@ -101,7 +101,9 @@ const Sidebar = () => {
               </li>
               <li
                 className="object-li-div"
-                onClick={() => navigate("/teacher/createhomework")}
+                onClick={() => {
+                  navigate("/teacher/createhomework");
+                }}
               >
                 Dodaj Domaći zadatak <MdNoteAdd />
               </li>
@@ -122,24 +124,66 @@ const Sidebar = () => {
             </ul>
           ) : (
             <ul>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/");
+                  window.location.reload();
+                }}
+              >
+                Domaci zadaci <PiExamFill />
+              </li>
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/homeworks/srpski");
+                  window.location.reload();
+                }}
+              >
                 Srpski Jezik <TbVocabulary />
               </li>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/homeworks/matematika");
+                  window.location.reload();
+                }}
+              >
                 Matematika <BiMath />
               </li>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/homeworks/geografija");
+                  window.location.reload();
+                }}
+              >
                 Geografija <FaEarthAmericas />
               </li>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/homeworks/istorija");
+                  window.location.reload();
+                }}
+              >
                 Istorija <FaHistory />
               </li>
-              <li className="object-li-div">
+              <li
+                className="object-li-div"
+                onClick={() => {
+                  navigate("/homeworks/engleski");
+                  window.location.reload();
+                }}
+              >
                 Engleski Jezik <TbVocabulary />
               </li>
               <li
                 className="object-li-div last-li"
-                onClick={() => navigate("/psychologist")}
+                onClick={() => {
+                  navigate("/psychologist");
+                  window.location.reload();
+                }}
               >
                 Obrati se psihologu <RiPsychotherapyFill />
               </li>
