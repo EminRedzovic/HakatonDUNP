@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import "./Home.css";
@@ -12,7 +11,6 @@ import { collection, getDocs } from "firebase/firestore";
 
 const Home = () => {
   const [selectedButton, setSelectedButton] = useState(null);
-
   const navigate = useNavigate();
   const homeworkCollection = collection(db, "homework");
   const userCollection = collection(db, "users");
@@ -51,6 +49,10 @@ const Home = () => {
 
       const myClassHomeworks = filteredData.filter(
         (homework) => homework.odeljenje === myProfile.odeljenje
+      );
+
+      const unfinishedHomeworks = myClassHomeworks.filter(
+        (homework) => homework.author
       );
 
       setHomeworks(myClassHomeworks);
