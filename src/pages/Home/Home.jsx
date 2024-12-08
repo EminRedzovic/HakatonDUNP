@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Home.css";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import { MdMapsHomeWork } from "react-icons/md";
@@ -7,7 +7,13 @@ import { FaComment } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const navigate = useNavigate("");
+  const [selectedButton, setSelectedButton] = useState(null);
+  const navigate = useNavigate();
+
+  const handleButtonClick = (button) => {
+    setSelectedButton(button);
+  };
+
   return (
     <div className="home">
       <div className="sidebar-div">
@@ -15,9 +21,6 @@ const Home = () => {
       </div>
 
       <div className="home-main">
-        <div>
-          <h1 className="text">Domaci Zadaci: Matematika</h1>
-        </div>
         <div className="all-homeworks">
           <div className="completed-work">
             <div className="complete">
@@ -131,8 +134,22 @@ const Home = () => {
           </div>
           <div className="incomplete-work">
             <div className="buttons">
-              <button className="incomplete-check">Incomplete</button>
-              <button className="waiting-check">Waiting for approval</button>
+              <div
+                className={`incomplete-check ${
+                  selectedButton === "incomplete" ? "selected" : ""
+                }`}
+                onClick={() => handleButtonClick("incomplete")}
+              >
+                Incomplete
+              </div>
+              <div
+                className={`waiting-check ${
+                  selectedButton === "waiting" ? "selected" : ""
+                }`}
+                onClick={() => handleButtonClick("waiting")}
+              >
+                Waiting for approval
+              </div>
             </div>
             <div className="home-works">
               <div className="work">

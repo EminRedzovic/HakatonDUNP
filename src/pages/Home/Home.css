@@ -45,6 +45,7 @@
 
 .home-main .all-homeworks {
   display: flex;
+  padding: 40px 20px;
 }
 
 .home-main .completed-work {
@@ -56,6 +57,7 @@
 
 .home-main .all-homeworks .incomplete-work .home-works {
   display: grid;
+
   grid-template-columns: repeat(3, 1fr);
   max-width: 500px;
 }
@@ -148,31 +150,54 @@
 }
 
 .home-main .all-homeworks .waiting-check {
-  float: right;
   border: 2px solid #62b6a9;
+  padding: 10px 40px;
   align-self: self-end;
   color: #2c3e45;
+  transition: 0.5s;
+  cursor: pointer;
   border-radius: 20px;
-  padding: 10px;
+  margin-top: 10px !important;
 }
 
 .home-main .all-homeworks .incomplete-check {
-  float: right;
+  margin-top: 10px !important;
   border: 2px solid #62b6a9;
+  transition: 0.5s;
+  cursor: pointer;
   align-self: self-end;
   color: #2c3e45;
+  padding: 10px 40px;
   border-radius: 20px;
-  padding: 10px;
   margin-left: 5px;
 }
 
 .buttons {
   padding: 10px;
-  height: 50px;
-  width: 290px;
+  gap: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .work-name p {
   color: #a69c4e;
   max-width: 250px;
   margin-left: 5px;
+}
+.incomplete-check:hover {
+  background-color: #62b6a9;
+  transition: 0.5s;
+  color: white !important;
+}
+
+.waiting-check:hover {
+  background-color: #62b6a9;
+  transition: 0.5s;
+  color: white !important;
+}
+.incomplete-check.selected,
+.waiting-check.selected {
+  background-color: #62b6a9;
+  color: white !important;
+  border-color: #62b6a9;
 }
