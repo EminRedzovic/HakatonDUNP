@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import "./modal.css";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDocs,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -13,14 +20,22 @@ const validationSchema = Yup.object({
   homeworkImage: Yup.mixed().required("Priložite sliku domaćeg zadatka"),
 });
 
-const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
+const SubmitHomeworkModal = ({
+  isOpen,
+  onClose,
+  homework,
+  taskTitle,
+  homeworkId,
+  homeworkData,
+}) => {
+  console.log(homeworkData);
   const [myProfile, setMyProfile] = useState([]);
   const [loading, setLoading] = useState(true);
   const [initialValues, setInitialValues] = useState({
-    title: taskTitle,
+    title: homework,
     homeworkImage: null,
     description: "",
-    username: "",
+    email: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
   const token = localStorage.getItem("token");
@@ -35,9 +50,8 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
         id: doc.id,
       }));
 
-      const profile = filteredData.filter(
-        (user) => user.email === auth.currentUser.email
-      );
+      console.log(filteredData);
+      const profile = filteredData.filter((user) => user.email === token);
       setMyProfile(profile);
       setLoading(false);
     } catch (err) {
@@ -58,10 +72,19 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
     if (myProfile.length > 0) {
       setInitialValues((prevValues) => ({
         ...prevValues,
-        username: myProfile[0]?.email || "",
+        email: myProfile[0]?.email || "",
       }));
+      console.log(myProfile[0]);
     }
   }, [myProfile]);
+  useEffect(() => {
+    if (homework) {
+      setInitialValues((prevValues) => ({
+        ...prevValues,
+        title: homework,
+      }));
+    }
+  }, [homework]);
 
   const studentCollection = collection(db, "homework");
 
@@ -71,11 +94,33 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
     validationSchema,
     onSubmit: async (values) => {
       try {
-        const data = { ...values };
-        await addDoc(studentCollection, data);
-        console.log("Podaci uspešno dodati!");
+        // Prvo proverimo da li imamo važeće vrednosti
+        const newWork = {
+          image: values.homeworkImage, // Base64 string, ovo je OK
+          autor: myProfile[0]?.email || "",
+          ocena: null,
+          poslato: new Date().toISOString(), // ISO string je u redu
+          opis: values.description,
+          opisNastavnik: "",
+          status: "waiting",
+        };
+
+        // Pokušaj da ažuriraš dokument bez previše dubokih objekata
+        const updatedWork = {
+          ...homeworkData.work,
+          newWork, // Dodajemo novi work, sa osnovnim podacima
+        };
+
+        const homeworkRef = doc(db, "homework", homeworkId);
+
+        // Ažuriraj samo relevantna polja, izbegavaj prekomplicirane objekte
+        await updateDoc(homeworkRef, {
+          "work.newWork": newWork, // Direkno ažuriraj samo ovo polje
+        });
+
+        console.log("Homework uspešno ažuriran!");
       } catch (err) {
-        console.error("Greška:", err);
+        console.error("Greška prilikom ažuriranja:", err);
       }
     },
   });
@@ -83,11 +128,11 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      formik.setFieldValue("homeworkImage", file);
-
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result);
+        const base64Image = reader.result;
+        formik.setFieldValue("homeworkImage", base64Image);
+        setImagePreview(base64Image); // Za prikaz u UI-ju
       };
       reader.readAsDataURL(file);
     }
@@ -157,11 +202,11 @@ const SubmitHomeworkModal = ({ isOpen, onClose, username, taskTitle }) => {
             )}
           </div>
           <div className="form-group">
-            <label htmlFor="username">Korisničk email</label>
+            <label htmlFor="email">Korisničk email</label>
             <input
               type="text"
-              id="username"
-              value={formik.values.username}
+              id="email"
+              value={formik.values.email}
               disabled
               className="input-field"
             />
