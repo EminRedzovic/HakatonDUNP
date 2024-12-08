@@ -27,6 +27,7 @@ const SubmitHomeworkModal = ({
   taskTitle,
   homeworkId,
   homeworkData,
+  getAllHomeWorks,
 }) => {
   console.log(homeworkData);
   const [myProfile, setMyProfile] = useState([]);
@@ -109,6 +110,7 @@ const SubmitHomeworkModal = ({
         await updateDoc(homeworkRef, {
           work: arrayUnion(newWork),
         });
+        getAllHomeWorks();
         onClose();
 
         console.log("Homework uspešno ažuriran!");
