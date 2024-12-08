@@ -31,7 +31,9 @@
 .sidebar-div {
   width: 30%;
 }
-
+.students-side {
+  width: 100%;
+}
 .home-main {
   width: 100%;
   height: 100vh;
