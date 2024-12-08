@@ -13,14 +13,14 @@ const Students = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const coursesCollections = collection(db, "users");
+  const usersCollections = collection(db, "users");
 
   const handleRatingChange = (rating) => {
     console.log("Selected Rating: ", rating);
   };
 
   const getStudents = async () => {
-    const data = await getDocs(coursesCollections);
+    const data = await getDocs(usersCollections);
     const filteredData = data.docs
       .map((doc) => ({
         id: doc.id,
@@ -66,7 +66,7 @@ const Students = () => {
     validationSchema,
     onSubmit: async (values) => {
       if (selectedStudent) {
-        const studentDocRef = doc(db, "users", selectedStudent.id);
+        const studentDocRef = doc(db, "activities", selectedStudent.id);
         try {
           console.log(selectedStudent.id);
           // Create an object to store the activity data
@@ -74,7 +74,7 @@ const Students = () => {
             title: values.activityTitle,
             description: values.activityDescription,
             image: values.activityImage, // Base64 encoded image
-            studentId: selectedStudent.id,
+            email: selectedStudent.email,
             timestamp: new Date().toISOString(),
           };
 

@@ -56,24 +56,26 @@ const Home = () => {
         ...doc.data(),
         id: doc.id,
       }));
-
+  
       const myClassHomeworks = filteredData.filter(
         (homework) => homework.odeljenje === myProfile.odeljenje
       );
-
-      const finishedHomeworks = filteredData.filter((item) =>
-        item.work.some((workItem) => workItem.autor === token)
+  
+      // Safe check for work array existence
+      const finishedHomeworks = filteredData?.filter((item) =>
+        Array.isArray(item.work) && item.work.some((workItem) => workItem.autor === token)
       );
-
-      const unfinishedHomeworks = filteredData.filter(
-        (item) => !item.work.some((workItem) => workItem.autor === token)
+  
+      const unfinishedHomeworks = filteredData?.filter(
+        (item) => Array.isArray(item.work) && !item.work.some((workItem) => workItem.autor === token)
       );
-
+  
       setUnfinishedHomeworks(unfinishedHomeworks);
       setFinishedHomeworks(finishedHomeworks);
       setHomeworks(myClassHomeworks);
     }
   };
+  
 
   console.log(finishedHomeworks, "123");
 
