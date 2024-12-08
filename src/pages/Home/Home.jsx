@@ -12,6 +12,7 @@ import SubmitHomeworkModal from "../../components/modal";
 
 const Home = () => {
   const [selectedButton, setSelectedButton] = useState(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedHomeworkId, setSelectedHomeworkId] = useState(null); // Novo stanje za ID
   const openModal = (id) => {
@@ -19,6 +20,7 @@ const Home = () => {
     setIsModalOpen(true);
   };
   const closeModal = () => setIsModalOpen(false);
+
   const navigate = useNavigate();
   const homeworkCollection = collection(db, "homework");
   const userCollection = collection(db, "users");
@@ -60,6 +62,10 @@ const Home = () => {
 
       const myClassHomeworks = filteredData.filter(
         (homework) => homework.odeljenje === myProfile.odeljenje
+      );
+
+      const unfinishedHomeworks = myClassHomeworks.filter(
+        (homework) => homework.author
       );
 
       setHomeworks(myClassHomeworks);
